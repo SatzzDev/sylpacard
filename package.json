@@ -1,7 +1,7 @@
 {
-    "name": "musicard",
+    "name": "sylphacard",
     "version": "2.0.5",
-    "description": "Musicard is one of the best canvas libraries to create a variety of music cards.",
+    "description": "SylphaCard is one of the best canvas libraries to create a variety of music cards.",
     "main": "dist/index.js",
     "module": "dist/index.mjs",
     "types": "dist/index.d.ts",
@@ -27,7 +27,7 @@
         "format": "biome format --write src/"
     },
     "keywords": [
-        "musicard",
+        "sylphacard",
         "music-card",
         "discord-music-card",
         "music-card-discord",
@@ -40,7 +40,7 @@
         "discord",
         "discord-canvas"
     ],
-    "author": "flameface",
+    "author": "SatzzDev <satganzdevs@gmai.com>",
     "license": "GPL-3.0-only",
     "devDependencies": {
         "@biomejs/biome": "^1.8.3",
@@ -50,10 +50,10 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/unburn/musicard.git"
+        "url": "https://github.com/SatzzDev/sylphacard.git"
     },
     "bugs": {
-        "url": "https://github.com/unburn/musicard/issues"
+        "url": "https://github.com/SatzzDev/sylphacard/issues"
     },
     "dependencies": {
         "@napi-rs/canvas": "^0.1.53",

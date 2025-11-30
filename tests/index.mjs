@@ -1,4 +1,4 @@
-import { Classic, ClassicPro, Dynamic, Mini, Upcoming, QueueList, AddedToQueue, Lyrics } from 'musicard';
+import { Classic, ClassicPro, Dynamic, Mini, Upcoming, QueueList, AddedToQueue, Lyrics } from 'sylphacard';
 import fs from 'fs';
 
 // Common values

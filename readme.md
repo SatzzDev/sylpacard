@@ -1,16 +1,16 @@
 # Usage
 
-You can use the Musicard package in your Discord bots, websites, etc.
+You can use the SylphaCard package in your Discord bots, websites, etc.
 
 ## Using Create File
 
 ```js
-import { Classic } from 'musicard';
+import { Classic } from 'sylphacard';
 import fs from 'fs';
 
 //OR
 
-const { Classic } = require('musicard');
+const { Classic } = require('sylphacard');
 const fs = require('fs');
 
 Classic({}).then(x => {
@@ -21,7 +21,7 @@ Classic({}).then(x => {
 ## Using Discord Bot
 
 ```js
-const { Classic } = require("musicard");
+const { Classic } = require("sylphacard");
 const fs = require("fs")
 
 const musicard = await Classic({});
@@ -37,13 +37,13 @@ return message.channel.send({
 
 # Themes
 
-Musicard is the #1 canvas library to create music cards with awesome themes.
+SylphaCard is the #1 canvas library to create music cards with awesome themes.
 
 ## Classic
 
 ```js
 (async () => {
-    const { Classic } = require('musicard');
+    const { Classic } = require('sylphacard');
     const fs = require('fs');
 
     const musicard = await Classic({
@@ -66,7 +66,7 @@ Musicard is the #1 canvas library to create music cards with awesome themes.
 })();
 ```
 ---
-![classic](/assets/output-classic.png)
+![classic](https://raw.githubusercontent.com/SatzzDev/sylpacard/main/assets/output-classic.png)
 ---
 
 ## Classic Pro
@@ -96,14 +96,14 @@ Musicard is the #1 canvas library to create music cards with awesome themes.
 })();
 ```
 ---
-![classicpro](/assets/output-classicpro.png)
+![classicpro](https://raw.githubusercontent.com/SatzzDev/sylpacard/main/output-classicpro.png)
 ---
 
 ## Dynamic
 
 ```js
 (async () => {
-    const { Dynamic } = require('musicard');
+    const { Dynamic } = require('sylphacard');
     const fs = require('fs');
 
     const musicard = await Dynamic({
@@ -123,14 +123,14 @@ Musicard is the #1 canvas library to create music cards with awesome themes.
 })();
 ```
 ---
-![dynamic](/assets/output-dynamic.png)
+![dynamic](https://raw.githubusercontent.com/SatzzDev/sylpacard/main/output-dynamic.png)
 ---
 
 ## Mini
 
 ```js
 (async () => {
-    const { Mini } = require('musicard');
+    const { Mini } = require('sylphacard');
     const fs = require('fs');
 
     const musicard = await Mini({
@@ -148,14 +148,14 @@ Musicard is the #1 canvas library to create music cards with awesome themes.
 })();
 ```
 ---
-![mini](/assets/output-mini.png)
+![mini](https://raw.githubusercontent.com/SatzzDev/sylpacard/main/output-mini.png)
 ---
 
 ## Upcoming
 
 ```js
 (async () => {
-    const { Upcoming } = require('musicard');
+    const { Upcoming } = require('sylphacard');
     const fs = require('fs');
 
     const musicard = await Upcoming({
@@ -171,14 +171,14 @@ Musicard is the #1 canvas library to create music cards with awesome themes.
 })();
 ```
 ---
-![Upcoming](/assets/output-upcoming.png)
+![Upcoming](https://raw.githubusercontent.com/SatzzDev/sylpacard/main/output-upcoming.png)
 ---
 
 ## Queue
 
 ```js
 (async () => {
-    const { QueueList } = require('musicard');
+    const { QueueList } = require('sylphacard');
     const fs = require('fs');
 
     const musicard = await QueueList({
@@ -203,7 +203,7 @@ Musicard is the #1 canvas library to create music cards with awesome themes.
 })();
 ```
 ---
-![queue](/assets/output-queue.png)
+![queue](https://raw.githubusercontent.com/SatzzDev/sylpacard/main/output-queue.png)
 ---
 
 
@@ -211,7 +211,7 @@ Musicard is the #1 canvas library to create music cards with awesome themes.
 
 ```js
 (async () => {
-    const { AddedToQueue } = require('musicard');
+    const { AddedToQueue } = require('sylphacard');
     const fs = require('fs');
 
     const musicard = await AddedToQueue({
@@ -229,7 +229,7 @@ Musicard is the #1 canvas library to create music cards with awesome themes.
 })();
 ```
 ---
-![addedtoqueue](/assets/output-addedtoqueue.png)
+![addedtoqueue](https://raw.githubusercontent.com/SatzzDev/sylpacard/main/output-addedtoqueue.png)
 ---
 
 
@@ -237,7 +237,7 @@ Musicard is the #1 canvas library to create music cards with awesome themes.
 
 ```js
 (async () => {
-    const { Lyrics } = require('musicard');
+    const { Lyrics } = require('sylphacard');
     const fs = require('fs');
 
     const musicard = await Lyrics({
@@ -306,5 +306,5 @@ Berakhir di Aku`,
 })();
 ```
 ---
-![lyrics](/assets/output-lyrics.png)
+![lyrics](https://raw.githubusercontent.com/SatzzDev/sylpacard/main/output-lyrics.png)
 ---

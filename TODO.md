@@ -1,6 +1,6 @@
-- [x] Remove src/themes/mostplayed.ts file
-- [x] Remove MostPlayed export from src/index.ts
-- [x] Remove MostPlayedOptions from src/typings/types.ts
-- [x] Remove MostPlayed import and test from tests/index.mjs
-- [x] Remove MostPlayed section from readme.md
-- [x] Verify no remaining references to MostPlayed
+- [ ] Update package.json: name, description, keywords, author, repository, bugs
+- [ ] Update readme.md: replace 'Musicard' with 'SylphaCard', update imports
+- [ ] Update tests/index.mjs: change import from 'musicard' to 'sylphacard'
+- [ ] Update tests/index.js: change require from 'musicard' to 'sylphacard'
+- [ ] Regenerate package-lock.json
+- [ ] Update git remote URL to https://github.com/SatzzDev/sylphacard.git
