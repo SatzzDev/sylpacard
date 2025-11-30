@@ -1,0 +1,926 @@
+// node_modules/tsup/assets/esm_shims.js
+import { fileURLToPath } from "url";
+import path from "path";
+var getFilename = () => fileURLToPath(import.meta.url);
+var getDirname = () => path.dirname(getFilename());
+var __dirname = /* @__PURE__ */ getDirname();
+
+// src/themes/classic.ts
+import { createCanvas, loadImage } from "@napi-rs/canvas";
+import { cropImage } from "cropify";
+
+// src/functions/generateSvg.ts
+var generateSvg = (svgContent) => {
+  return `data:image/svg+xml;base64,${Buffer.from(svgContent).toString("base64")}`;
+};
+
+// src/functions/registerFont.ts
+import { GlobalFonts } from "@napi-rs/canvas";
+import fs from "node:fs";
+import path2 from "node:path";
+function registerFont(fontPath, fontName) {
+  const rootFontsPath = path2.join(__dirname, "../fonts", fontPath);
+  if (fs.existsSync(rootFontsPath)) {
+    GlobalFonts.registerFromPath(rootFontsPath, fontName);
+  } else {
+    const srcFontsPath = path2.join(__dirname, "../fonts", fontPath);
+    if (fs.existsSync(srcFontsPath)) {
+      GlobalFonts.registerFromPath(srcFontsPath, fontName);
+    } else {
+      throw new Error(`Font file not found at ${rootFontsPath} or ${srcFontsPath}`);
+    }
+  }
+}
+
+// src/themes/classic.ts
+registerFont("PlusJakartaSans-Bold.ttf", "bold");
+registerFont("PlusJakartaSans-ExtraBold.ttf", "extrabold");
+registerFont("PlusJakartaSans-ExtraLight.ttf", "extralight");
+registerFont("PlusJakartaSans-Light.ttf", "light");
+registerFont("PlusJakartaSans-Medium.ttf", "medium");
+registerFont("PlusJakartaSans-Regular.ttf", "regular");
+registerFont("PlusJakartaSans-SemiBold.ttf", "semibold");
+var Classic = async (option) => {
+  if (!option.progress) option.progress = 3;
+  if (!option.name) option.name = "Musicard";
+  if (!option.author) option.author = "By Unburn";
+  if (!option.startTime) option.startTime = "0:00";
+  if (!option.endTime) option.endTime = "0:00";
+  if (!option.progressBarColor) option.progressBarColor = "#5F2D00";
+  if (!option.progressColor) option.progressColor = "#FF7A00";
+  if (!option.backgroundColor) option.backgroundColor = "#070707";
+  if (!option.nameColor) option.nameColor = "#FF7A00";
+  if (!option.authorColor) option.authorColor = "#FFFFFF";
+  if (!option.timeColor) option.timeColor = "#FFFFFF";
+  if (!option.imageDarkness) option.imageDarkness = 10;
+  const noImageSvg = generateSvg(`<svg width="837" height="837" viewBox="0 0 837 837" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="837" height="837" fill="${option.progressColor}"/>
+    <path d="M419.324 635.912C406.035 635.912 394.658 631.18 385.195 621.717C375.732 612.254 371 600.878 371 587.589C371 574.3 375.732 562.923 385.195 553.46C394.658 543.997 406.035 539.265 419.324 539.265C432.613 539.265 443.989 543.997 453.452 553.46C462.915 562.923 467.647 574.3 467.647 587.589C467.647 600.878 462.915 612.254 453.452 621.717C443.989 631.18 432.613 635.912 419.324 635.912ZM371 490.941V201H467.647V490.941H371Z" fill="${option.backgroundColor}"/>
+    </svg>`);
+  if (!option.thumbnailImage) {
+    option.thumbnailImage = noImageSvg;
+  }
+  let thumbnail;
+  try {
+    thumbnail = await loadImage(
+      await cropImage({
+        imagePath: option.thumbnailImage,
+        borderRadius: 50,
+        width: 837,
+        height: 837,
+        cropCenter: true
+      })
+    );
+  } catch {
+    thumbnail = await loadImage(
+      await cropImage({
+        imagePath: noImageSvg,
+        borderRadius: 50,
+        width: 837,
+        height: 837,
+        cropCenter: true
+      })
+    );
+  }
+  if (option.progress > 100) {
+    option.progress = 100;
+  }
+  if (option.imageDarkness < 0) {
+    option.imageDarkness = 0;
+  } else if (option.imageDarkness > 100) {
+    option.imageDarkness = 100;
+  }
+  if (option.name.length > 18) {
+    option.name = `${option.name.slice(0, 18)}...`;
+  }
+  if (option.author.length > 18) {
+    option.author = `${option.author.slice(0, 18)}...`;
+  }
+  try {
+    const canvas = createCanvas(2458, 837);
+    const ctx = canvas.getContext("2d");
+    if (option.backgroundImage) {
+      try {
+        const darknessSvg = generateSvg(`<svg width="1568" height="837" viewBox="0 0 1568 837" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="1568" height="512" rx="50" fill="#070707" fill-opacity="${option.imageDarkness / 100}"/>
+                <rect y="565" width="1568" height="272" rx="50" fill="#070707" fill-opacity="${option.imageDarkness / 100}"/>
+                </svg>`);
+        const image = await cropImage({
+          imagePath: option.backgroundImage,
+          width: 1568,
+          height: 837,
+          cropCenter: true
+        });
+        await cropImage({
+          // @ts-ignore
+          imagePath: image,
+          x: 0,
+          y: -170,
+          width: 1568,
+          height: 512,
+          borderRadius: 50
+        }).then(async (x) => {
+          ctx.drawImage(await loadImage(x), 0, 0);
+        });
+        await cropImage({
+          // @ts-ignore
+          imagePath: image,
+          x: 0,
+          y: -845,
+          width: 1568,
+          height: 272,
+          borderRadius: 50
+        }).then(async (x) => {
+          ctx.drawImage(await loadImage(x), 0, 565);
+        });
+        ctx.drawImage(await loadImage(darknessSvg), 0, 0);
+      } catch (_err) {
+        const backgroundSvg = generateSvg(`<svg width="2458" height="837" viewBox="0 0 2458 837" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="1568" height="512" rx="50" fill="${option.backgroundColor}"/>
+                <rect y="565" width="1568" height="272" rx="50" fill="${option.backgroundColor}"/>
+                </svg>`);
+        const background = await loadImage(backgroundSvg);
+        ctx.drawImage(background, 0, 0);
+      }
+    } else {
+      const backgroundSvg = generateSvg(`<svg width="2458" height="837" viewBox="0 0 2458 837" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1568" height="512" rx="50" fill="${option.backgroundColor}"/>
+    <rect y="565" width="1568" height="272" rx="50" fill="${option.backgroundColor}"/>
+    </svg>`);
+      const background = await loadImage(backgroundSvg);
+      ctx.drawImage(background, 0, 0);
+    }
+    ctx.drawImage(thumbnail, 1621, 0);
+    const completed = 1342 * option.progress / 100;
+    const progressBarSvg = generateSvg(`<svg width="1342" height="76" viewBox="0 0 1342 76" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect y="13" width="1342" height="47" rx="20" fill="${option.progressBarColor}"/>
+        <rect y="13" width="${completed}" height="47" rx="20" fill="${option.progressColor}"/>
+        <rect x="${completed - 40}" y="3" width="69.4422" height="69.4422" rx="34.7211" fill="${option.progressColor}" stroke="${option.backgroundColor}" stroke-width="6"/>
+        </svg>`);
+    const progressBar = await loadImage(progressBarSvg);
+    ctx.drawImage(progressBar, 113, 635);
+    ctx.fillStyle = `${option.nameColor}`;
+    ctx.font = "124px extrabold";
+    ctx.fillText(option.name, 113, 230);
+    ctx.fillStyle = `${option.authorColor}`;
+    ctx.font = "87px regular";
+    ctx.fillText(option.author, 113, 370);
+    ctx.fillStyle = `${option.timeColor}`;
+    ctx.font = "50px semibold";
+    ctx.fillText(option.startTime, 113, 768);
+    ctx.fillStyle = `${option.timeColor}`;
+    ctx.font = "50px semibold";
+    ctx.fillText(option.endTime, 1332, 768);
+    return canvas.toBuffer("image/png");
+  } catch (e) {
+    throw new Error(e.message);
+  }
+};
+
+// src/themes/classicpro.ts
+import { createCanvas as createCanvas2, loadImage as loadImage2 } from "@napi-rs/canvas";
+import { cropImage as cropImage2 } from "cropify";
+var ClassicPro = async (option) => {
+  if (!option.progress) option.progress = 3.6;
+  if (!option.name) option.name = "Musicard";
+  if (!option.author) option.author = "By Unburn";
+  if (!option.startTime) option.startTime = "0:00";
+  if (!option.endTime) option.endTime = "0:00";
+  if (!option.progressBarColor) option.progressBarColor = "#5F2D00";
+  if (!option.progressColor) option.progressColor = "#FF7A00";
+  if (!option.backgroundColor) option.backgroundColor = "#070707";
+  if (!option.nameColor) option.nameColor = "#FF7A00";
+  if (!option.authorColor) option.authorColor = "#FFFFFF";
+  if (!option.timeColor) option.timeColor = "#FFFFFF";
+  if (!option.imageDarkness) option.imageDarkness = 10;
+  const noImageSvg = generateSvg(`<svg width="837" height="837" viewBox="0 0 837 837" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="837" height="837" fill="${option.progressColor}"/>
+    <path d="M419.324 635.912C406.035 635.912 394.658 631.18 385.195 621.717C375.732 612.254 371 600.878 371 587.589C371 574.3 375.732 562.923 385.195 553.46C394.658 543.997 406.035 539.265 419.324 539.265C432.613 539.265 443.989 543.997 453.452 553.46C462.915 562.923 467.647 574.3 467.647 587.589C467.647 600.878 462.915 612.254 453.452 621.717C443.989 631.18 432.613 635.912 419.324 635.912ZM371 490.941V201H467.647V490.941H371Z" fill="${option.backgroundColor}"/>
+    </svg>`);
+  if (!option.thumbnailImage) {
+    option.thumbnailImage = noImageSvg;
+  }
+  let thumbnail;
+  try {
+    thumbnail = await loadImage2(
+      await cropImage2({
+        imagePath: option.thumbnailImage,
+        borderRadius: 50,
+        width: 331,
+        height: 331,
+        cropCenter: true
+      })
+    );
+  } catch {
+    thumbnail = await loadImage2(
+      await cropImage2({
+        imagePath: noImageSvg,
+        borderRadius: 50,
+        width: 331,
+        height: 331,
+        cropCenter: true
+      })
+    );
+  }
+  if (option.progress > 100) {
+    option.progress = 100;
+  }
+  if (option.name.length > 12) {
+    option.name = `${option.name.slice(0, 12)}...`;
+  }
+  if (option.author.length > 12) {
+    option.author = `${option.author.slice(0, 12)}...`;
+  }
+  try {
+    const canvas = createCanvas2(1252, 708);
+    const ctx = canvas.getContext("2d");
+    if (option.backgroundImage) {
+      try {
+        const darknessSvg = generateSvg(`<svg width="1252" height="708" viewBox="0 0 1252 708" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="1252" height="708" rx="50" fill="#070707" fill-opacity="${option.imageDarkness / 100}"/>
+                </svg>`);
+        const image = await cropImage2({
+          imagePath: option.backgroundImage,
+          width: 1252,
+          height: 708,
+          borderRadius: 50,
+          cropCenter: true
+        });
+        ctx.drawImage(await loadImage2(image), 0, 0);
+        ctx.drawImage(await loadImage2(darknessSvg), 0, 0);
+      } catch (_error) {
+        const backgroundSvg = generateSvg(`<svg width="1252" height="708" viewBox="0 0 1252 708" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="1252" height="708" rx="50" fill="${option.backgroundColor}"/>
+                </svg>`);
+        const background = await loadImage2(backgroundSvg);
+        ctx.drawImage(background, 0, 0);
+      }
+    } else {
+      const backgroundSvg = generateSvg(`<svg width="1252" height="708" viewBox="0 0 1252 708" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="1252" height="708" rx="50" fill="${option.backgroundColor}"/>
+            </svg>`);
+      const background = await loadImage2(backgroundSvg);
+      ctx.drawImage(background, 0, 0);
+    }
+    ctx.drawImage(thumbnail, 87, 91);
+    const completed = 1083 * option.progress / 100;
+    const progressBarSvg = generateSvg(`<svg width="1083" height="77" viewBox="0 0 1083 77" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect y="19" width="1083" height="40" rx="20" fill="${option.progressBarColor}"/>
+        <rect y="19" width="${completed}" height="40" rx="20" fill="${option.progressColor}"/>
+        <rect x="${completed - 40}" y="5" width="65" height="65" rx="35.5" fill="${option.progressColor}" stroke="${option.backgroundColor}" stroke-width="5"/>
+        </svg>`);
+    const progressBar = await loadImage2(progressBarSvg);
+    ctx.drawImage(progressBar, 87, 490);
+    ctx.fillStyle = `${option.nameColor}`;
+    ctx.font = "90px extrabold";
+    ctx.fillText(option.name, 486, 240);
+    ctx.fillStyle = `${option.authorColor}`;
+    ctx.font = "60px semibold";
+    ctx.fillText(option.author, 486, 330);
+    ctx.fillStyle = `${option.timeColor}`;
+    ctx.font = "40px semibold";
+    ctx.fillText(option.startTime, 85, 630);
+    ctx.fillStyle = `${option.timeColor}`;
+    ctx.font = "40px semibold";
+    ctx.fillText(option.endTime, 1070, 630);
+    return canvas.toBuffer("image/png");
+  } catch (e) {
+    throw new Error(e.message);
+  }
+};
+
+// src/themes/dynamic.ts
+import { createCanvas as createCanvas3, loadImage as loadImage3 } from "@napi-rs/canvas";
+import { cropImage as cropImage3 } from "cropify";
+var Dynamic = async (option) => {
+  if (!option.progress) option.progress = 0.618;
+  if (!option.name) option.name = "Musicard";
+  if (!option.author) option.author = "By Unburn";
+  if (!option.progressBarColor) option.progressBarColor = "#5F2D00";
+  if (!option.progressColor) option.progressColor = "#FF7A00";
+  if (!option.backgroundColor) option.backgroundColor = "#070707";
+  if (!option.nameColor) option.nameColor = "#FF7A00";
+  if (!option.authorColor) option.authorColor = "#FFFFFF";
+  if (!option.imageDarkness) option.imageDarkness = 10;
+  const noImageSvg = generateSvg(`<svg width="837" height="837" viewBox="0 0 837 837" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="837" height="837" fill="${option.progressColor}"/>
+    <path d="M419.324 635.912C406.035 635.912 394.658 631.18 385.195 621.717C375.732 612.254 371 600.878 371 587.589C371 574.3 375.732 562.923 385.195 553.46C394.658 543.997 406.035 539.265 419.324 539.265C432.613 539.265 443.989 543.997 453.452 553.46C462.915 562.923 467.647 574.3 467.647 587.589C467.647 600.878 462.915 612.254 453.452 621.717C443.989 631.18 432.613 635.912 419.324 635.912ZM371 490.941V201H467.647V490.941H371Z" fill="${option.backgroundColor}"/>
+    </svg>`);
+  if (!option.thumbnailImage) {
+    option.thumbnailImage = noImageSvg;
+  }
+  let thumbnail;
+  try {
+    thumbnail = await loadImage3(
+      await cropImage3({
+        imagePath: option.thumbnailImage,
+        borderRadius: 210,
+        width: 400,
+        height: 400,
+        cropCenter: true
+      })
+    );
+  } catch {
+    thumbnail = await loadImage3(
+      await cropImage3({
+        imagePath: noImageSvg,
+        borderRadius: 210,
+        width: 400,
+        height: 400,
+        cropCenter: true
+      })
+    );
+  }
+  if (option.progress >= 100) {
+    option.progress = 99.999;
+  }
+  if (option.name.length > 20) {
+    option.name = `${option.name.slice(0, 20)}...`;
+  }
+  if (option.author.length > 20) {
+    option.author = `${option.author.slice(0, 20)}...`;
+  }
+  try {
+    const canvas = createCanvas3(2367, 520);
+    const ctx = canvas.getContext("2d");
+    if (option.backgroundImage) {
+      try {
+        const darknessSvg = generateSvg(`<svg width="2367" height="520" viewBox="0 0 2367 520" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0 0H2367V520H0V0Z" fill="#070707" fill-opacity="${option.imageDarkness / 100}"/>
+                </svg>`);
+        const image = await cropImage3({
+          imagePath: option.backgroundImage,
+          width: 2367,
+          height: 520,
+          borderRadius: 270,
+          cropCenter: true
+        });
+        const darkImage = await cropImage3({
+          imagePath: darknessSvg,
+          width: 2367,
+          height: 520,
+          borderRadius: 270,
+          cropCenter: true
+        });
+        ctx.drawImage(await loadImage3(image), 0, 0);
+        ctx.drawImage(await loadImage3(darkImage), 0, 0);
+      } catch (_error) {
+        const backgroundSvg = generateSvg(`<svg width="2367" height="520" viewBox="0 0 2367 520" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0 260C0 116.406 116.406 0 260 0H2107C2250.59 0 2367 116.406 2367 260V260C2367 403.594 2250.59 520 2107 520H260C116.406 520 0 403.594 0 260V260Z" fill="${option.backgroundColor}"/>
+                </svg>`);
+        const background = await loadImage3(backgroundSvg);
+        ctx.drawImage(background, 0, 0);
+      }
+    } else {
+      const backgroundSvg = generateSvg(`<svg width="2367" height="520" viewBox="0 0 2367 520" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 260C0 116.406 116.406 0 260 0H2107C2250.59 0 2367 116.406 2367 260V260C2367 403.594 2250.59 520 2107 520H260C116.406 520 0 403.594 0 260V260Z" fill="${option.backgroundColor}"/>
+            </svg>`);
+      const background = await loadImage3(backgroundSvg);
+      ctx.drawImage(background, 0, 0);
+    }
+    ctx.drawImage(thumbnail, 69, 61);
+    ctx.beginPath();
+    ctx.arc(2100, 260, 155, 0, Math.PI * 2, true);
+    ctx.closePath();
+    ctx.lineWidth = 35;
+    ctx.strokeStyle = `${option.progressBarColor}`;
+    ctx.stroke();
+    const angle = option.progress / 100 * Math.PI * 2;
+    ctx.beginPath();
+    ctx.arc(2100, 260, 155, -Math.PI / 2, -Math.PI / 2 + angle, false);
+    ctx.lineWidth = 35;
+    ctx.strokeStyle = option.progressColor;
+    ctx.stroke();
+    ctx.fillStyle = `${option.nameColor}`;
+    ctx.font = "100px extrabold";
+    ctx.fillText(option.name, 550, 240);
+    ctx.fillStyle = `${option.authorColor}`;
+    ctx.font = "70px semibold";
+    ctx.fillText(option.author, 550, 350);
+    return canvas.toBuffer("image/png");
+  } catch (e) {
+    throw new Error(e.message);
+  }
+};
+
+// src/themes/mini.ts
+import { createCanvas as createCanvas4, loadImage as loadImage4 } from "@napi-rs/canvas";
+import { cropImage as cropImage4 } from "cropify";
+var Mini = async (option) => {
+  if (!option.progress) option.progress = 2.618;
+  if (!option.progressBarColor) option.progressBarColor = "#5F2D00";
+  if (!option.progressColor) option.progressColor = "#FF7A00";
+  if (!option.backgroundColor) option.backgroundColor = "#070707";
+  if (!option.menuColor) option.menuColor = "#FF7A00";
+  if (!option.imageDarkness) option.imageDarkness = 10;
+  const noImageSvg = generateSvg(`<svg width="837" height="837" viewBox="0 0 837 837" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="837" height="837" fill="${option.progressColor}"/>
+    <path d="M419.324 635.912C406.035 635.912 394.658 631.18 385.195 621.717C375.732 612.254 371 600.878 371 587.589C371 574.3 375.732 562.923 385.195 553.46C394.658 543.997 406.035 539.265 419.324 539.265C432.613 539.265 443.989 543.997 453.452 553.46C462.915 562.923 467.647 574.3 467.647 587.589C467.647 600.878 462.915 612.254 453.452 621.717C443.989 631.18 432.613 635.912 419.324 635.912ZM371 490.941V201H467.647V490.941H371Z" fill="${option.backgroundColor}"/>
+    </svg>`);
+  if (!option.thumbnailImage) {
+    option.thumbnailImage = noImageSvg;
+  }
+  let thumbnail;
+  try {
+    thumbnail = await loadImage4(
+      await cropImage4({
+        imagePath: option.thumbnailImage,
+        borderRadius: 50,
+        width: 544,
+        height: 544,
+        cropCenter: true
+      })
+    );
+  } catch {
+    thumbnail = await loadImage4(
+      await cropImage4({
+        imagePath: noImageSvg,
+        borderRadius: 50,
+        width: 544,
+        height: 544,
+        cropCenter: true
+      })
+    );
+  }
+  if (option.progress > 100) {
+    option.progress = 100;
+  }
+  try {
+    const canvas = createCanvas4(613, 837);
+    const ctx = canvas.getContext("2d");
+    if (option.backgroundImage) {
+      try {
+        const darknessSvg = generateSvg(`<svg width="618" height="837" viewBox="0 0 618 837" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="618" height="837" rx="50" fill="#070707" fill-opacity="${option.imageDarkness / 100}"/>
+            </svg>`);
+        const image = await cropImage4({
+          imagePath: option.backgroundImage,
+          width: 613,
+          height: 837,
+          borderRadius: 50,
+          cropCenter: true
+        });
+        ctx.drawImage(await loadImage4(image), 0, 0);
+        ctx.drawImage(await loadImage4(darknessSvg), 0, 0);
+      } catch (_error) {
+        const backgroundSvg = generateSvg(`<svg width="613" height="837" viewBox="0 0 613 837" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="613" height="837" rx="50" fill="${option.backgroundColor}" />
+                </svg>`);
+        const background = await loadImage4(backgroundSvg);
+        ctx.drawImage(background, 0, 0);
+      }
+    } else {
+      const backgroundSvg = generateSvg(`<svg width="613" height="837" viewBox="0 0 613 837" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="613" height="837" rx="50" fill="${option.backgroundColor}" />
+            </svg>`);
+      const background = await loadImage4(backgroundSvg);
+      ctx.drawImage(background, 0, 0);
+    }
+    ctx.drawImage(thumbnail, 34, 29);
+    const completed = 544 * option.progress / 100;
+    const progressBarSvg = generateSvg(`<svg width="544" height="34" viewBox="0 0 544 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="544" height="34" rx="17" fill="${option.progressBarColor}" />
+        <rect width="${completed}" height="34" rx="17" fill="${option.progressColor}" />
+        </svg>`);
+    const progressBar = await loadImage4(progressBarSvg);
+    ctx.drawImage(progressBar, 34, 611);
+    let middleMenu;
+    if (option.paused) {
+      middleMenu = `<path d="M145 69.6L178.6 48L145 26.4V69.6ZM157 96C150.36 96 144.12 94.74 138.28 92.22C132.44 89.7 127.36 86.28 123.04 81.96C118.72 77.64 115.3 72.56 112.78 66.72C110.26 60.88 109 54.64 109 48C109 41.36 110.26 35.12 112.78 29.28C115.3 23.44 118.72 18.36 123.04 14.04C127.36 9.72 132.44 6.3 138.28 3.78C144.12 1.26 150.36 0 157 0C163.64 0 169.88 1.26 175.72 3.78C181.56 6.3 186.64 9.72 190.96 14.04C195.28 18.36 198.7 23.44 201.22 29.28C203.74 35.12 205 41.36 205 48C205 54.64 203.74 60.88 201.22 66.72C198.7 72.56 195.28 77.64 190.96 81.96C186.64 86.28 181.56 89.7 175.72 92.22C169.88 94.74 163.64 96 157 96Z" fill="${option.menuColor}" />`;
+    } else {
+      middleMenu = `<path d="M142.6 67.2H152.2V28.8H142.6V67.2ZM161.8 67.2H171.4V28.8H161.8V67.2ZM157 96C150.36 96 144.12 94.74 138.28 92.22C132.44 89.7 127.36 86.28 123.04 81.96C118.72 77.64 115.3 72.56 112.78 66.72C110.26 60.88 109 54.64 109 48C109 41.36 110.26 35.12 112.78 29.28C115.3 23.44 118.72 18.36 123.04 14.04C127.36 9.72 132.44 6.3 138.28 3.78C144.12 1.26 150.36 0 157 0C163.64 0 169.88 1.26 175.72 3.78C181.56 6.3 186.64 9.72 190.96 14.04C195.28 18.36 198.7 23.44 201.22 29.28C203.74 35.12 205 41.36 205 48C205 54.64 203.74 60.88 201.22 66.72C198.7 72.56 195.28 77.64 190.96 81.96C186.64 86.28 181.56 89.7 175.72 92.22C169.88 94.74 163.64 96 157 96Z" fill="${option.menuColor}" />`;
+    }
+    const menuSvg = generateSvg(
+      `<svg width="315" height="96" viewBox="0 0 315 96" fill="none" xmlns="http://www.w3.org/2000/svg">${middleMenu}<path d="M263.2 62.8H270.6V33.2H263.2V62.8ZM278 62.8L300.2 48L278 33.2V62.8ZM278 85C272.882 85 268.072 84.0287 263.57 82.0862C259.068 80.1437 255.153 77.5075 251.822 74.1775C248.492 70.8475 245.856 66.9317 243.914 62.43C241.971 57.9283 241 53.1183 241 48C241 42.8817 241.971 38.0717 243.914 33.57C245.856 29.0683 248.492 25.1525 251.822 21.8225C255.153 18.4925 259.068 15.8563 263.57 13.9138C268.072 11.9712 272.882 11 278 11C283.118 11 287.928 11.9712 292.43 13.9138C296.932 15.8563 300.848 18.4925 304.178 21.8225C307.508 25.1525 310.144 29.0683 312.086 33.57C314.029 38.0717 315 42.8817 315 48C315 53.1183 314.029 57.9283 312.086 62.43C310.144 66.9317 307.508 70.8475 304.178 74.1775C300.848 77.5075 296.932 80.1437 292.43 82.0862C287.928 84.0287 283.118 85 278 85Z" fill="${option.menuColor}" /><path d="M51.8 33.2L44.4 33.2L44.4 62.8H51.8L51.8 33.2ZM37 33.2L14.8 48L37 62.8L37 33.2ZM37 11C42.1183 11 46.9283 11.9713 51.43 13.9138C55.9317 15.8563 59.8475 18.4925 63.1775 21.8225C66.5075 25.1525 69.1437 29.0683 71.0862 33.57C73.0288 38.0717 74 42.8817 74 48C74 53.1183 73.0288 57.9283 71.0862 62.43C69.1437 66.9317 66.5075 70.8475 63.1775 74.1775C59.8475 77.5075 55.9317 80.1437 51.43 82.0862C46.9283 84.0288 42.1183 85 37 85C31.8817 85 27.0717 84.0288 22.57 82.0862C18.0683 80.1437 14.1525 77.5075 10.8225 74.1775C7.4925 70.8475 4.85625 66.9317 2.91375 62.43C0.97125 57.9283 -9.53674e-07 53.1183 -9.53674e-07 48C-9.53674e-07 42.8817 0.97125 38.0717 2.91375 33.57C4.85625 29.0683 7.4925 25.1525 10.8225 21.8225C14.1525 18.4925 18.0683 15.8563 22.57 13.9138C27.0717 11.9713 31.8817 11 37 11Z" fill="${option.menuColor}" /></svg>`
+    );
+    const menu = await loadImage4(menuSvg);
+    ctx.drawImage(menu, 143, 693);
+    return canvas.toBuffer("image/png");
+  } catch (e) {
+    throw new Error(e.message);
+  }
+};
+
+// src/themes/upcoming.ts
+import { createCanvas as createCanvas5, loadImage as loadImage5 } from "@napi-rs/canvas";
+import { cropImage as cropImage5 } from "cropify";
+registerFont("PlusJakartaSans-Bold.ttf", "bold");
+registerFont("PlusJakartaSans-ExtraBold.ttf", "extrabold");
+registerFont("PlusJakartaSans-ExtraLight.ttf", "extralight");
+registerFont("PlusJakartaSans-Light.ttf", "light");
+registerFont("PlusJakartaSans-Medium.ttf", "medium");
+registerFont("PlusJakartaSans-Regular.ttf", "regular");
+registerFont("PlusJakartaSans-SemiBold.ttf", "semibold");
+var Upcoming = async (options) => {
+  if (!options.title) options.title = "Musicard";
+  if (!options.titleColor) options.titleColor = "#d0d5d6";
+  if (!options.author) options.author = "By Unburn";
+  if (!options.authorColor) options.authorColor = "#FFFFFF";
+  if (!options.trackIndex) options.trackIndex = 1;
+  if (!options.trackIndexTextColor) options.trackIndexTextColor = "#000000";
+  if (!options.trackIndexBackgroundColor) options.trackIndexBackgroundColor = "#d0d5d6";
+  if (!(options.trackIndexBackgroundRadii || !Array.isArray(options.trackIndexBackgroundRadii))) options.trackIndexBackgroundRadii = 10;
+  if (!options.backgroundColor) options.backgroundColor = "#070707";
+  if (!options.imageDarkness) options.imageDarkness = 10;
+  const noImageSvg = generateSvg(`<svg width="613" height="837" viewBox="0 0 613 837" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="613" height="837" rx="50" fill="${options.backgroundColor}" />
+    </svg>`);
+  if (!options.thumbnailImage) {
+    options.thumbnailImage = noImageSvg;
+  }
+  let thumbnail;
+  try {
+    thumbnail = await loadImage5(
+      await cropImage5({
+        //@ts-ignore
+        imagePath: options.thumbnailImage,
+        borderRadius: 20,
+        width: 150,
+        height: 150,
+        cropCenter: true
+      })
+    );
+  } catch (_e) {
+    thumbnail = await loadImage5(
+      await cropImage5({
+        imagePath: noImageSvg,
+        borderRadius: 20,
+        width: 150,
+        height: 150,
+        cropCenter: true
+      })
+    );
+  }
+  if (options.imageDarkness < 0) {
+    options.imageDarkness = 0;
+  } else if (options.imageDarkness > 100) {
+    options.imageDarkness = 100;
+  }
+  if (options.title.length > 18) {
+    options.title = `${options.title.slice(0, 18)}...`;
+  }
+  if (options.author.length > 19) {
+    options.author = `${options.author.slice(0, 19)}...`;
+  }
+  try {
+    const canvas = createCanvas5(690, 194);
+    const ctx = canvas.getContext("2d");
+    if (options.backgroundImage) {
+      try {
+        const darknessSvg = generateSvg(`<svg width="690" height="194" viewBox="0 0 690 194" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="690" height="194" rx="30" fill="#070707" fill-opacity="${options.imageDarkness / 100}"/>
+                </svg>`);
+        const image = await cropImage5({
+          // @ts-ignore
+          imagePath: options.backgroundImage,
+          width: 690,
+          height: 194,
+          borderRadius: 35,
+          cropCenter: true
+        });
+        ctx.drawImage(await loadImage5(image), 0, 0);
+        ctx.drawImage(await loadImage5(darknessSvg), 0, 0);
+      } catch (_error) {
+        const backgroundSvg = generateSvg(`<svg width="690" height="194" viewBox="0 0 690 194" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="690" height="194" rx="35" fill="${options.backgroundColor}"/>
+                </svg>`);
+        const backgroundColor = await loadImage5(backgroundSvg);
+        ctx.drawImage(backgroundColor, 0, 0);
+      }
+    } else {
+      const backgroundSvg = generateSvg(`<svg width="690" height="194" viewBox="0 0 690 194" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="690" height="194" rx="35" fill="${options.backgroundColor}"/>
+            </svg>`);
+      const backgroundColor = await loadImage5(backgroundSvg);
+      ctx.drawImage(backgroundColor, 0, 0);
+    }
+    ctx.drawImage(thumbnail, 22, 22);
+    ctx.font = "33px extrabold";
+    ctx.fillStyle = options.titleColor;
+    ctx.fillText(options.title, 200, canvas.height / 2);
+    ctx.font = "23px medium";
+    ctx.fillStyle = options.authorColor;
+    ctx.fillText(options.author, 200, canvas.height / 2 + 35);
+    ctx.fillStyle = options.trackIndexBackgroundColor;
+    ctx.beginPath();
+    ctx.roundRect(canvas.width - 65, canvas.height - 63, 50, 50, options.trackIndexBackgroundRadii);
+    ctx.fill();
+    ctx.closePath();
+    ctx.fillStyle = options.trackIndexTextColor;
+    ctx.font = "30px bold";
+    ctx.fillText(options.trackIndex.toString(), canvas.width - 47, canvas.height - 26);
+    return canvas.toBuffer("image/png");
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+// src/themes/queue.ts
+import { createCanvas as createCanvas6, loadImage as loadImage6 } from "@napi-rs/canvas";
+import { cropImage as cropImage6 } from "cropify";
+registerFont("PlusJakartaSans-Bold.ttf", "bold");
+registerFont("PlusJakartaSans-ExtraBold.ttf", "extrabold");
+registerFont("PlusJakartaSans-ExtraLight.ttf", "extralight");
+registerFont("PlusJakartaSans-Light.ttf", "light");
+registerFont("PlusJakartaSans-Medium.ttf", "medium");
+registerFont("PlusJakartaSans-Regular.ttf", "regular");
+registerFont("PlusJakartaSans-SemiBold.ttf", "semibold");
+var QueueList = async (options) => {
+  if (!options.title) options.title = "Queue List";
+  if (!options.titleColor) options.titleColor = "#FFFFFF";
+  if (!options.backgroundColor) options.backgroundColor = "#070707";
+  if (!options.imageDarkness) options.imageDarkness = 10;
+  const noImageSvg = generateSvg(`<svg width="613" height="837" viewBox="0 0 613 837" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="613" height="837" rx="50" fill="${options.backgroundColor}" />
+    </svg>`);
+  try {
+    const canvas = createCanvas6(690, 400);
+    const ctx = canvas.getContext("2d");
+    if (options.backgroundImage) {
+      try {
+        const darknessSvg = generateSvg(`<svg width="690" height="400" viewBox="0 0 690 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="690" height="400" rx="30" fill="#070707" fill-opacity="${options.imageDarkness / 100}"/>
+                </svg>`);
+        const image = await cropImage6({
+          //@ts-ignore
+          imagePath: options.backgroundImage,
+          width: 690,
+          height: 400,
+          borderRadius: 35,
+          cropCenter: true
+        });
+        ctx.drawImage(await loadImage6(image), 0, 0);
+        ctx.drawImage(await loadImage6(darknessSvg), 0, 0);
+      } catch (_error) {
+        const backgroundSvg = generateSvg(`<svg width="690" height="400" viewBox="0 0 690 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="690" height="400" rx="35" fill="${options.backgroundColor}"/>
+                </svg>`);
+        const backgroundColor = await loadImage6(backgroundSvg);
+        ctx.drawImage(backgroundColor, 0, 0);
+      }
+    } else {
+      const backgroundSvg = generateSvg(`<svg width="690" height="400" viewBox="0 0 690 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="690" height="400" rx="35" fill="${options.backgroundColor}"/>
+            </svg>`);
+      const backgroundColor = await loadImage6(backgroundSvg);
+      ctx.drawImage(backgroundColor, 0, 0);
+    }
+    ctx.font = "30px extrabold";
+    ctx.fillStyle = options.titleColor;
+    ctx.fillText(options.title, 20, 50);
+    const tracksToShow = options.tracks.slice(0, 5);
+    for (let i = 0; i < tracksToShow.length; i++) {
+      const track = tracksToShow[i];
+      const y = 80 + i * 60;
+      let thumbnail;
+      try {
+        thumbnail = await loadImage6(
+          await cropImage6({
+            //@ts-ignore
+            imagePath: track.thumbnailImage || noImageSvg,
+            borderRadius: 10,
+            width: 40,
+            height: 40,
+            cropCenter: true
+          })
+        );
+      } catch (_e) {
+        thumbnail = await loadImage6(
+          await cropImage6({
+            imagePath: noImageSvg,
+            borderRadius: 10,
+            width: 40,
+            height: 40,
+            cropCenter: true
+          })
+        );
+      }
+      ctx.drawImage(thumbnail, 20, y);
+      ctx.font = "18px bold";
+      ctx.fillStyle = "#FFFFFF";
+      ctx.fillText(track.title.length > 25 ? `${track.title.slice(0, 25)}...` : track.title, 80, y + 15);
+      ctx.font = "14px medium";
+      ctx.fillStyle = "#CCCCCC";
+      ctx.fillText(track.author.length > 20 ? `${track.author.slice(0, 20)}...` : track.author, 80, y + 35);
+      ctx.fillStyle = "#FF7A00";
+      ctx.font = "16px bold";
+      ctx.fillText(`${i + 1}`, canvas.width - 40, y + 25);
+    }
+    return canvas.toBuffer("image/png");
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+// src/themes/mostplayed.ts
+import { createCanvas as createCanvas7, loadImage as loadImage7 } from "@napi-rs/canvas";
+import { cropImage as cropImage7 } from "cropify";
+registerFont("PlusJakartaSans-Bold.ttf", "bold");
+registerFont("PlusJakartaSans-ExtraBold.ttf", "extrabold");
+registerFont("PlusJakartaSans-ExtraLight.ttf", "extralight");
+registerFont("PlusJakartaSans-Light.ttf", "light");
+registerFont("PlusJakartaSans-Medium.ttf", "medium");
+registerFont("PlusJakartaSans-Regular.ttf", "regular");
+registerFont("PlusJakartaSans-SemiBold.ttf", "semibold");
+var MostPlayed = async (options) => {
+  if (!options.titleColor) options.titleColor = "#FFFFFF";
+  if (!options.authorColor) options.authorColor = "#FFFFFF";
+  if (!options.playCountColor) options.playCountColor = "#FF7A00";
+  if (!options.backgroundColor) options.backgroundColor = "#070707";
+  if (!options.imageDarkness) options.imageDarkness = 10;
+  const noImageSvg = generateSvg(`<svg width="613" height="837" viewBox="0 0 613 837" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="613" height="837" rx="50" fill="${options.backgroundColor}" />
+    </svg>`);
+  let thumbnail;
+  try {
+    thumbnail = await loadImage7(
+      await cropImage7({
+        //@ts-ignore
+        imagePath: options.thumbnailImage || noImageSvg,
+        borderRadius: 20,
+        width: 150,
+        height: 150,
+        cropCenter: true
+      })
+    );
+  } catch (_e) {
+    thumbnail = await loadImage7(
+      await cropImage7({
+        imagePath: noImageSvg,
+        borderRadius: 20,
+        width: 150,
+        height: 150,
+        cropCenter: true
+      })
+    );
+  }
+  if (options.imageDarkness < 0) {
+    options.imageDarkness = 0;
+  } else if (options.imageDarkness > 100) {
+    options.imageDarkness = 100;
+  }
+  if (options.title.length > 18) {
+    options.title = `${options.title.slice(0, 18)}...`;
+  }
+  if (options.author.length > 19) {
+    options.author = `${options.author.slice(0, 19)}...`;
+  }
+  try {
+    const canvas = createCanvas7(690, 194);
+    const ctx = canvas.getContext("2d");
+    if (options.backgroundImage) {
+      try {
+        const darknessSvg = generateSvg(`<svg width="690" height="194" viewBox="0 0 690 194" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="690" height="194" rx="30" fill="#070707" fill-opacity="${options.imageDarkness / 100}"/>
+                </svg>`);
+        const image = await cropImage7({
+          //@ts-ignore
+          imagePath: options.backgroundImage,
+          width: 690,
+          height: 194,
+          borderRadius: 35,
+          cropCenter: true
+        });
+        ctx.drawImage(await loadImage7(image), 0, 0);
+        ctx.drawImage(await loadImage7(darknessSvg), 0, 0);
+      } catch (_error) {
+        const backgroundSvg = generateSvg(`<svg width="690" height="194" viewBox="0 0 690 194" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="690" height="194" rx="35" fill="${options.backgroundColor}"/>
+                </svg>`);
+        const backgroundColor = await loadImage7(backgroundSvg);
+        ctx.drawImage(backgroundColor, 0, 0);
+      }
+    } else {
+      const backgroundSvg = generateSvg(`<svg width="690" height="194" viewBox="0 0 690 194" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="690" height="194" rx="35" fill="${options.backgroundColor}"/>
+            </svg>`);
+      const backgroundColor = await loadImage7(backgroundSvg);
+      ctx.drawImage(backgroundColor, 0, 0);
+    }
+    ctx.drawImage(thumbnail, 22, 22);
+    ctx.font = "33px extrabold";
+    ctx.fillStyle = options.titleColor;
+    ctx.fillText(options.title, 200, canvas.height / 2);
+    ctx.font = "23px medium";
+    ctx.fillStyle = options.authorColor;
+    ctx.fillText(options.author, 200, canvas.height / 2 + 35);
+    ctx.fillStyle = options.playCountColor;
+    ctx.font = "25px bold";
+    ctx.fillText(`Plays: ${options.playCount}`, canvas.width - 200, canvas.height - 30);
+    return canvas.toBuffer("image/png");
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+// src/themes/addedtoqueue.ts
+import { createCanvas as createCanvas8, loadImage as loadImage8 } from "@napi-rs/canvas";
+import { cropImage as cropImage8 } from "cropify";
+registerFont("PlusJakartaSans-Bold.ttf", "bold");
+registerFont("PlusJakartaSans-ExtraBold.ttf", "extrabold");
+registerFont("PlusJakartaSans-ExtraLight.ttf", "extralight");
+registerFont("PlusJakartaSans-Light.ttf", "light");
+registerFont("PlusJakartaSans-Medium.ttf", "medium");
+registerFont("PlusJakartaSans-Regular.ttf", "regular");
+registerFont("PlusJakartaSans-SemiBold.ttf", "semibold");
+var AddedToQueue = async (options) => {
+  if (!options.titleColor) options.titleColor = "#FFFFFF";
+  if (!options.authorColor) options.authorColor = "#FFFFFF";
+  if (!options.message) options.message = "Added to Queue";
+  if (!options.messageColor) options.messageColor = "#00FF00";
+  if (!options.backgroundColor) options.backgroundColor = "#070707";
+  if (!options.imageDarkness) options.imageDarkness = 10;
+  const noImageSvg = generateSvg(`<svg width="613" height="837" viewBox="0 0 613 837" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="613" height="837" rx="50" fill="${options.backgroundColor}" />
+    </svg>`);
+  let thumbnail;
+  try {
+    thumbnail = await loadImage8(
+      await cropImage8({
+        //@ts-ignore
+        imagePath: options.thumbnailImage || noImageSvg,
+        borderRadius: 20,
+        width: 100,
+        height: 100,
+        cropCenter: true
+      })
+    );
+  } catch (_e) {
+    thumbnail = await loadImage8(
+      await cropImage8({
+        imagePath: noImageSvg,
+        borderRadius: 20,
+        width: 100,
+        height: 100,
+        cropCenter: true
+      })
+    );
+  }
+  if (options.imageDarkness < 0) {
+    options.imageDarkness = 0;
+  } else if (options.imageDarkness > 100) {
+    options.imageDarkness = 100;
+  }
+  if (options.title.length > 18) {
+    options.title = `${options.title.slice(0, 18)}...`;
+  }
+  if (options.author.length > 19) {
+    options.author = `${options.author.slice(0, 19)}...`;
+  }
+  try {
+    const canvas = createCanvas8(500, 150);
+    const ctx = canvas.getContext("2d");
+    if (options.backgroundImage) {
+      try {
+        const darknessSvg = generateSvg(`<svg width="500" height="150" viewBox="0 0 500 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="500" height="150" rx="20" fill="#070707" fill-opacity="${options.imageDarkness / 100}"/>
+                </svg>`);
+        const image = await cropImage8({
+          //@ts-ignore
+          imagePath: options.backgroundImage,
+          width: 500,
+          height: 150,
+          borderRadius: 25,
+          cropCenter: true
+        });
+        ctx.drawImage(await loadImage8(image), 0, 0);
+        ctx.drawImage(await loadImage8(darknessSvg), 0, 0);
+      } catch (_error) {
+        const backgroundSvg = generateSvg(`<svg width="500" height="150" viewBox="0 0 500 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="500" height="150" rx="25" fill="${options.backgroundColor}"/>
+                </svg>`);
+        const backgroundColor = await loadImage8(backgroundSvg);
+        ctx.drawImage(backgroundColor, 0, 0);
+      }
+    } else {
+      const backgroundSvg = generateSvg(`<svg width="500" height="150" viewBox="0 0 500 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="500" height="150" rx="25" fill="${options.backgroundColor}"/>
+            </svg>`);
+      const backgroundColor = await loadImage8(backgroundSvg);
+      ctx.drawImage(backgroundColor, 0, 0);
+    }
+    ctx.drawImage(thumbnail, 20, 25);
+    ctx.font = "20px extrabold";
+    ctx.fillStyle = options.titleColor;
+    ctx.fillText(options.title, 140, canvas.height / 2 - 10);
+    ctx.font = "16px medium";
+    ctx.fillStyle = options.authorColor;
+    ctx.fillText(options.author, 140, canvas.height / 2 + 15);
+    ctx.fillStyle = options.messageColor;
+    ctx.font = "18px bold";
+    ctx.fillText(options.message, canvas.width - 150, canvas.height - 20);
+    return canvas.toBuffer("image/png");
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+export {
+  AddedToQueue,
+  Classic,
+  ClassicPro,
+  Dynamic,
+  Mini,
+  MostPlayed,
+  QueueList,
+  Upcoming
+};
