@@ -668,7 +668,7 @@ var QueueList = async (options) => {
     ctx.font = "30px extrabold";
     ctx.fillStyle = options.titleColor;
     ctx.fillText(options.title, 20, 50);
-    const tracksToShow = options.tracks.slice(0, 5);
+    const tracksToShow = options.tracks.slice(0, 10);
     for (let i = 0; i < tracksToShow.length; i++) {
       const track = tracksToShow[i];
       const y = 80 + i * 60;

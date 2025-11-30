@@ -68,7 +68,7 @@ const QueueList = async (options: QueueListOptions): Promise<Buffer> => {
         ctx.fillText(options.title, 20, 50);
 
         // Tracks
-        const tracksToShow = options.tracks.slice(0, 5); // Show up to 5 tracks
+        const tracksToShow = options.tracks.slice(0, 10); // Show up to 5 tracks
         for (let i = 0; i < tracksToShow.length; i++) {
             const track = tracksToShow[i];
             const y = 80 + i * 60;
