@@ -7,3 +7,5 @@ export { Upcoming } from "./themes/upcoming.js";
 export { QueueList } from "./themes/queue.js";
 export { AddedToQueue } from "./themes/addedtoqueue.js";
 export { Lyrics } from "./themes/lyrics.js";
+export { Greeting } from "./themes/greeting.js";
+export { GreetingV2 } from "./themes/greetingv2.js";

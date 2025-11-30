@@ -1026,7 +1026,7 @@ var Lyrics = async (options) => {
       ctx.fillRect(0, 0, canvasWidth, canvasHeight);
     }
     ctx.drawImage(thumbnail, 50, 50);
-    ctx.font = "30px extrabold";
+    ctx.font = "35px extrabold";
     ctx.fillStyle = options.titleColor;
     let title = options.title;
     let titleWidth = ctx.measureText(title).width;
@@ -1035,7 +1035,7 @@ var Lyrics = async (options) => {
       titleWidth = ctx.measureText(title).width;
     }
     ctx.fillText(title, 180, 90);
-    ctx.font = "20px medium";
+    ctx.font = "25px medium";
     ctx.fillStyle = options.authorColor;
     let author = options.author;
     let authorWidth = ctx.measureText(author).width;
@@ -1043,9 +1043,9 @@ var Lyrics = async (options) => {
       author = author.slice(0, -4) + "...";
       authorWidth = ctx.measureText(author).width;
     }
-    ctx.fillText(author, 180, 120);
+    ctx.fillText(author, 180, 130);
     ctx.fillStyle = options.lyricsColor;
-    ctx.font = "18px lyrics";
+    ctx.font = "20px lyrics";
     const lyricsLines = options.lyrics.split("\n");
     const maxLyricsWidth = canvasWidth - 100;
     const lineHeight = 30;
@@ -1087,11 +1087,545 @@ var Lyrics = async (options) => {
     throw new Error(error.message);
   }
 };
+
+// src/themes/greeting.ts
+import { createCanvas as createCanvas9, loadImage as loadImage9 } from "@napi-rs/canvas";
+import { cropImage as cropImage9 } from "cropify";
+registerFont("PlusJakartaSans-Bold.ttf", "bold");
+registerFont("PlusJakartaSans-ExtraBold.ttf", "extrabold");
+registerFont("PlusJakartaSans-ExtraLight.ttf", "extralight");
+registerFont("PlusJakartaSans-Light.ttf", "light");
+registerFont("PlusJakartaSans-Medium.ttf", "medium");
+registerFont("PlusJakartaSans-Regular.ttf", "regular");
+registerFont("PlusJakartaSans-SemiBold.ttf", "semibold");
+registerFont("Blacklisted.ttf", "blacklisted");
+var Greeting = async (option) => {
+  if (!option.type) option.type = "welcome";
+  if (!option.username) option.username = "User";
+  if (!option.message) {
+    option.message = option.type === "welcome" ? "Welcome to the server!" : "Goodbye, we'll miss you!";
+  }
+  if (!option.memberCount) option.memberCount = "1";
+  if (!option.backgroundColor) {
+    option.backgroundColor = option.type === "welcome" ? "#0a192f" : "#112240";
+  }
+  if (!option.primaryColor) {
+    option.primaryColor = option.type === "welcome" ? "#172a45" : "#1e3a5f";
+  }
+  if (!option.accentColor) {
+    option.accentColor = option.type === "welcome" ? "#00d9ff" : "#64ffda";
+  }
+  if (!option.textColor) option.textColor = "#e6f1ff";
+  if (!option.secondaryTextColor) option.secondaryTextColor = "#8892b0";
+  if (!option.imageDarkness) option.imageDarkness = 40;
+  const noAvatarSvg = generateSvg(`<svg width="600" height="600" viewBox="0 0 600 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="600" height="600" fill="${option.primaryColor}"/>
+    <circle cx="300" cy="220" r="90" fill="${option.accentColor}"/>
+    <ellipse cx="300" cy="480" rx="150" ry="110" fill="${option.accentColor}"/>
+    </svg>`);
+  if (!option.avatarImage) {
+    option.avatarImage = noAvatarSvg;
+  }
+  let avatar;
+  try {
+    avatar = await loadImage9(
+      await cropImage9({
+        imagePath: option.avatarImage,
+        borderRadius: 300,
+        // Circular
+        width: 600,
+        height: 600,
+        cropCenter: true
+      })
+    );
+  } catch {
+    avatar = await loadImage9(
+      await cropImage9({
+        imagePath: noAvatarSvg,
+        borderRadius: 300,
+        width: 600,
+        height: 600,
+        cropCenter: true
+      })
+    );
+  }
+  if (option.imageDarkness < 0) {
+    option.imageDarkness = 0;
+  } else if (option.imageDarkness > 100) {
+    option.imageDarkness = 100;
+  }
+  if (option.username.length > 22) {
+    option.username = `${option.username.slice(0, 22)}...`;
+  }
+  if (option.message.length > 40) {
+    option.message = `${option.message.slice(0, 40)}...`;
+  }
+  try {
+    const canvas = createCanvas9(2458, 837);
+    const ctx = canvas.getContext("2d");
+    if (option.backgroundImage) {
+      try {
+        const image = await cropImage9({
+          imagePath: option.backgroundImage,
+          width: 2458,
+          height: 837,
+          cropCenter: true,
+          borderRadius: 50
+        });
+        const img = await loadImage9(image);
+        ctx.filter = "blur(10px)";
+        ctx.drawImage(img, 0, 0);
+        ctx.filter = "none";
+        const darknessSvg = generateSvg(`<svg width="2458" height="837" viewBox="0 0 2458 837" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" style="stop-color:#000000;stop-opacity:${option.imageDarkness / 100}" />
+                        <stop offset="100%" style="stop-color:#000000;stop-opacity:${option.imageDarkness / 100 * 0.6}" />
+                    </linearGradient>
+                </defs>
+                <rect width="2458" height="837" rx="50" fill="url(#grad1)"/>
+                </svg>`);
+        ctx.drawImage(await loadImage9(darknessSvg), 0, 0);
+      } catch (_err) {
+        const backgroundSvg = generateSvg(`<svg width="2458" height="837" viewBox="0 0 2458 837" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="2458" height="837" rx="50" fill="${option.backgroundColor}"/>
+                </svg>`);
+        const background = await loadImage9(backgroundSvg);
+        ctx.drawImage(background, 0, 0);
+      }
+    } else {
+      const backgroundSvg = generateSvg(`<svg width="2458" height="837" viewBox="0 0 2458 837" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:${option.backgroundColor};stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:${option.primaryColor};stop-opacity:1" />
+                </linearGradient>
+            </defs>
+            <rect width="2458" height="837" rx="50" fill="url(#bgGrad)"/>
+            </svg>`);
+      const background = await loadImage9(backgroundSvg);
+      ctx.drawImage(background, 0, 0);
+    }
+    const borderSvg = generateSvg(`<svg width="650" height="650" viewBox="0 0 650 650" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="325" cy="325" r="325" fill="${option.primaryColor}" opacity="0.3"/>
+        <circle cx="325" cy="325" r="315" fill="none" stroke="${option.accentColor}" stroke-width="8"/>
+        </svg>`);
+    const border = await loadImage9(borderSvg);
+    ctx.drawImage(border, 1783, 93);
+    ctx.drawImage(avatar, 1808, 118);
+    ctx.shadowColor = "rgba(0, 0, 0, 0.5)";
+    ctx.shadowBlur = 20;
+    ctx.shadowOffsetX = 0;
+    ctx.shadowOffsetY = 4;
+    const titleText = option.type === "welcome" ? "WELCOME" : "GOODBYE";
+    ctx.fillStyle = `${option.accentColor}`;
+    ctx.font = "150px blacklisted";
+    ctx.fillText(titleText, 113, 220);
+    ctx.shadowBlur = 0;
+    ctx.shadowOffsetY = 0;
+    ctx.shadowColor = option.accentColor;
+    ctx.shadowBlur = 15;
+    ctx.fillStyle = `${option.textColor}`;
+    ctx.font = "95px extrabold";
+    ctx.fillText(option.username, 113, 360);
+    ctx.shadowBlur = 0;
+    ctx.fillStyle = `${option.secondaryTextColor}`;
+    ctx.font = "60px regular";
+    ctx.fillText(option.message, 113, 470);
+    const accentLineSvg = generateSvg(`<svg width="1500" height="6" viewBox="0 0 1500 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <linearGradient id="lineGrad" x1="0%" y1="0%" x2="200%" y2="0%">
+                <stop offset="0%" style="stop-color:${option.accentColor};stop-opacity:1" />
+                <stop offset="100%" style="stop-color:${option.accentColor};stop-opacity:0" />
+            </linearGradient>
+        </defs>
+        <rect width="1500" height="6" rx="3" fill="url(#lineGrad)"/>
+        </svg>`);
+    const accentLine = await loadImage9(accentLineSvg);
+    ctx.drawImage(accentLine, 113, 530);
+    const memberText = option.type === "welcome" ? `Member #${option.memberCount}` : `${option.memberCount} members`;
+    ctx.font = "35px blacklisted";
+    const textWidth = ctx.measureText(memberText).width;
+    const badgeWidth = textWidth + 140;
+    const memberBadgeSvg = generateSvg(`<svg width="${badgeWidth}" height="85" viewBox="0 0 ${badgeWidth} 85" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <linearGradient id="badgeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" style="stop-color:${option.accentColor};stop-opacity:0.2" />
+                <stop offset="100%" style="stop-color:${option.accentColor};stop-opacity:0.1" />
+            </linearGradient>
+        </defs>
+        <rect width="${badgeWidth}" height="85" rx="42" fill="url(#badgeGrad)" stroke="${option.accentColor}" stroke-width="2"/>
+        <circle cx="50" cy="42" r="16" fill="${option.accentColor}"/>
+        <path d="M30 68C30 58 37 52 50 52C63 52 70 58 70 68" stroke="${option.accentColor}" stroke-width="4" stroke-linecap="round"/>
+        </svg>`);
+    const memberBadge = await loadImage9(memberBadgeSvg);
+    ctx.drawImage(memberBadge, 113, 650);
+    ctx.fillStyle = `${option.accentColor}`;
+    ctx.font = "35px blacklisted";
+    ctx.fillText(memberText, 210, 710);
+    return canvas.toBuffer("image/png");
+  } catch (e) {
+    throw new Error(e.message);
+  }
+};
+
+// src/themes/greetingv2.ts
+import { createCanvas as createCanvas10, loadImage as loadImage10 } from "@napi-rs/canvas";
+import { cropImage as cropImage10 } from "cropify";
+
+// src/functions/icons.ts
+var Icons = class {
+  /**
+   * Calendar icon - untuk joined date
+   */
+  static calendar(options) {
+    const { color, size = 50 } = options;
+    return generateSvg(`<svg width="${size}" height="${size}" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="8" y="12" width="34" height="30" rx="3" fill="none" stroke="${color}" stroke-width="3"/>
+            <line x1="15" y1="8" x2="15" y2="16" stroke="${color}" stroke-width="3" stroke-linecap="round"/>
+            <line x1="35" y1="8" x2="35" y2="16" stroke="${color}" stroke-width="3" stroke-linecap="round"/>
+            <line x1="8" y1="22" x2="42" y2="22" stroke="${color}" stroke-width="3"/>
+            <circle cx="17" cy="29" r="2" fill="${color}"/>
+            <circle cx="25" cy="29" r="2" fill="${color}"/>
+            <circle cx="33" cy="29" r="2" fill="${color}"/>
+            <circle cx="17" cy="36" r="2" fill="${color}"/>
+            <circle cx="25" cy="36" r="2" fill="${color}"/>
+        </svg>`);
+  }
+  /**
+   * Users icon - untuk member count
+   */
+  static users(options) {
+    const { color, size = 50 } = options;
+    return generateSvg(`<svg width="${size}" height="${size}" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="25" cy="18" r="8" fill="${color}"/>
+            <path d="M12 42C12 34 17 30 25 30C33 30 38 34 38 42" stroke="${color}" stroke-width="3" stroke-linecap="round"/>
+        </svg>`);
+  }
+  /**
+   * Clock icon - untuk waktu
+   */
+  static clock(options) {
+    const { color, size = 50 } = options;
+    return generateSvg(`<svg width="${size}" height="${size}" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="25" cy="25" r="18" stroke="${color}" stroke-width="3" fill="none"/>
+            <line x1="25" y1="25" x2="25" y2="15" stroke="${color}" stroke-width="3" stroke-linecap="round"/>
+            <line x1="25" y1="25" x2="32" y2="25" stroke="${color}" stroke-width="3" stroke-linecap="round"/>
+            <circle cx="25" cy="25" r="2" fill="${color}"/>
+        </svg>`);
+  }
+  /**
+   * Star icon - untuk rank/level
+   */
+  static star(options) {
+    const { color, size = 50 } = options;
+    return generateSvg(`<svg width="${size}" height="${size}" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M25 5L29.5 19H44L32.5 27.5L37 41.5L25 33L13 41.5L17.5 27.5L6 19H20.5L25 5Z" fill="${color}" stroke="${color}" stroke-width="2" stroke-linejoin="round"/>
+        </svg>`);
+  }
+  /**
+   * Trophy icon - untuk achievement
+   */
+  static trophy(options) {
+    const { color, size = 50 } = options;
+    return generateSvg(`<svg width="${size}" height="${size}" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M15 8H35V20C35 25 30 28 25 28C20 28 15 25 15 20V8Z" stroke="${color}" stroke-width="3" fill="none"/>
+            <line x1="25" y1="28" x2="25" y2="38" stroke="${color}" stroke-width="3"/>
+            <rect x="18" y="38" width="14" height="4" rx="2" fill="${color}"/>
+            <path d="M35 10H40C40 10 42 10 42 15" stroke="${color}" stroke-width="3" stroke-linecap="round"/>
+            <path d="M15 10H10C10 10 8 10 8 15" stroke="${color}" stroke-width="3" stroke-linecap="round"/>
+        </svg>`);
+  }
+  /**
+   * Heart icon - untuk likes/favorites
+   */
+  static heart(options) {
+    const { color, size = 50 } = options;
+    return generateSvg(`<svg width="${size}" height="${size}" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M25 42L7 24C4 21 4 16 7 13C10 10 15 10 18 13L25 20L32 13C35 10 40 10 43 13C46 16 46 21 43 24L25 42Z" fill="${color}"/>
+        </svg>`);
+  }
+  /**
+   * Message icon - untuk chat/messages
+   */
+  static message(options) {
+    const { color, size = 50 } = options;
+    return generateSvg(`<svg width="${size}" height="${size}" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="6" y="10" width="38" height="28" rx="4" stroke="${color}" stroke-width="3" fill="none"/>
+            <path d="M15 38L20 32H30L35 38" stroke="${color}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            <line x1="14" y1="20" x2="36" y2="20" stroke="${color}" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="14" y1="27" x2="28" y2="27" stroke="${color}" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>`);
+  }
+  /**
+   * Shield icon - untuk security/verified
+   */
+  static shield(options) {
+    const { color, size = 50 } = options;
+    return generateSvg(`<svg width="${size}" height="${size}" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M25 5L8 12V25C8 35 15 42 25 45C35 42 42 35 42 25V12L25 5Z" stroke="${color}" stroke-width="3" fill="none"/>
+            <path d="M18 24L23 29L33 19" stroke="${color}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>`);
+  }
+  /**
+   * Lightning icon - untuk boost/premium
+   */
+  static lightning(options) {
+    const { color, size = 50 } = options;
+    return generateSvg(`<svg width="${size}" height="${size}" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M28 5L12 28H25L22 45L38 22H25L28 5Z" fill="${color}"/>
+        </svg>`);
+  }
+  /**
+   * Gift icon - untuk bonus/rewards
+   */
+  static gift(options) {
+    const { color, size = 50 } = options;
+    return generateSvg(`<svg width="${size}" height="${size}" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="10" y="18" width="30" height="8" rx="2" stroke="${color}" stroke-width="3" fill="none"/>
+            <rect x="12" y="26" width="26" height="18" rx="2" stroke="${color}" stroke-width="3" fill="none"/>
+            <line x1="25" y1="18" x2="25" y2="44" stroke="${color}" stroke-width="3"/>
+            <path d="M25 18C25 18 22 12 18 12C15 12 13 14 13 16C13 18 15 18 18 18H25Z" fill="${color}"/>
+            <path d="M25 18C25 18 28 12 32 12C35 12 37 14 37 16C37 18 35 18 32 18H25Z" fill="${color}"/>
+        </svg>`);
+  }
+  /**
+   * Fire icon - untuk streak/hot
+   */
+  static fire(options) {
+    const { color, size = 50 } = options;
+    return generateSvg(`<svg width="${size}" height="${size}" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M25 8C25 8 20 15 20 22C20 26 22 28 25 28C28 28 30 26 30 22C30 15 25 8 25 8Z" fill="${color}"/>
+            <path d="M18 25C18 25 15 28 15 32C15 37 19 42 25 42C31 42 35 37 35 32C35 28 32 25 32 25" stroke="${color}" stroke-width="3" stroke-linecap="round"/>
+        </svg>`);
+  }
+  /**
+   * Game controller icon
+   */
+  static gameController(options) {
+    const { color, size = 50 } = options;
+    return generateSvg(`<svg width="${size}" height="${size}" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M8 22C8 18 11 15 15 15H35C39 15 42 18 42 22V28C42 32 39 35 35 35H15C11 35 8 32 8 28V22Z" stroke="${color}" stroke-width="3" fill="none"/>
+            <circle cx="18" cy="25" r="2" fill="${color}"/>
+            <circle cx="32" cy="22" r="2" fill="${color}"/>
+            <circle cx="36" cy="26" r="2" fill="${color}"/>
+            <line x1="12" y1="25" x2="16" y2="25" stroke="${color}" stroke-width="2.5"/>
+            <line x1="14" y1="23" x2="14" y2="27" stroke="${color}" stroke-width="2.5"/>
+        </svg>`);
+  }
+  /**
+   * Crown icon - untuk VIP/premium
+   */
+  static crown(options) {
+    const { color, size = 50 } = options;
+    return generateSvg(`<svg width="${size}" height="${size}" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M8 35L12 15L20 25L25 10L30 25L38 15L42 35H8Z" fill="${color}" stroke="${color}" stroke-width="2" stroke-linejoin="round"/>
+            <rect x="8" y="35" width="34" height="5" rx="2" fill="${color}"/>
+            <circle cx="12" cy="15" r="3" fill="${color}"/>
+            <circle cx="25" cy="10" r="3" fill="${color}"/>
+            <circle cx="38" cy="15" r="3" fill="${color}"/>
+        </svg>`);
+  }
+};
+
+// src/themes/greetingv2.ts
+registerFont("PlusJakartaSans-Bold.ttf", "bold");
+registerFont("PlusJakartaSans-ExtraBold.ttf", "extrabold");
+registerFont("PlusJakartaSans-ExtraLight.ttf", "extralight");
+registerFont("PlusJakartaSans-Light.ttf", "light");
+registerFont("PlusJakartaSans-Medium.ttf", "medium");
+registerFont("PlusJakartaSans-Regular.ttf", "regular");
+registerFont("PlusJakartaSans-SemiBold.ttf", "semibold");
+registerFont("Blacklisted.ttf", "blacklisted");
+var GreetingV2 = async (option) => {
+  if (!option.type) option.type = "welcome";
+  if (!option.username) option.username = "User";
+  if (!option.message) {
+    option.message = option.type === "welcome" ? "Welcome to the server!" : "Goodbye, we'll miss you!";
+  }
+  if (!option.memberCount) option.memberCount = "1";
+  if (!option.joinedAt) {
+    const now = /* @__PURE__ */ new Date();
+    option.joinedAt = now.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric"
+    });
+  }
+  if (!option.backgroundColor) {
+    option.backgroundColor = option.type === "welcome" ? "#0a192f" : "#112240";
+  }
+  if (!option.accentColor) {
+    option.accentColor = option.type === "welcome" ? "#00d9ff" : "#64ffda";
+  }
+  if (!option.textColor) option.textColor = "#e6f1ff";
+  if (!option.secondaryTextColor) option.secondaryTextColor = "#8892b0";
+  if (!option.imageDarkness) option.imageDarkness = 40;
+  const noAvatarSvg = generateSvg(`<svg width="837" height="837" viewBox="0 0 837 837" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="837" height="837" fill="${option.accentColor}"/>
+    <circle cx="418.5" cy="320" r="130" fill="${option.backgroundColor}"/>
+    <ellipse cx="418.5" cy="680" rx="220" ry="160" fill="${option.backgroundColor}"/>
+    </svg>`);
+  if (!option.avatarImage) {
+    option.avatarImage = noAvatarSvg;
+  }
+  let avatar;
+  try {
+    avatar = await loadImage10(
+      await cropImage10({
+        imagePath: option.avatarImage,
+        borderRadius: 50,
+        width: 837,
+        height: 837,
+        cropCenter: true
+      })
+    );
+  } catch {
+    avatar = await loadImage10(
+      await cropImage10({
+        imagePath: noAvatarSvg,
+        borderRadius: 50,
+        width: 837,
+        height: 837,
+        cropCenter: true
+      })
+    );
+  }
+  if (option.imageDarkness < 0) {
+    option.imageDarkness = 0;
+  } else if (option.imageDarkness > 100) {
+    option.imageDarkness = 100;
+  }
+  if (option.username.length > 18) {
+    option.username = `${option.username.slice(0, 18)}...`;
+  }
+  if (option.message.length > 18) {
+    option.message = `${option.message.slice(0, 18)}...`;
+  }
+  try {
+    const canvas = createCanvas10(2458, 837);
+    const ctx = canvas.getContext("2d");
+    if (option.backgroundImage) {
+      try {
+        const image = await cropImage10({
+          imagePath: option.backgroundImage,
+          width: 1568,
+          height: 837,
+          cropCenter: true
+        });
+        await cropImage10({
+          // @ts-ignore
+          imagePath: image,
+          x: 0,
+          y: -170,
+          width: 1568,
+          height: 512,
+          borderRadius: 50
+        }).then(async (x) => {
+          const img = await loadImage10(x);
+          ctx.filter = "blur(10px)";
+          ctx.drawImage(img, 0, 0);
+          ctx.filter = "none";
+        });
+        await cropImage10({
+          // @ts-ignore
+          imagePath: image,
+          x: 0,
+          y: -845,
+          width: 1568,
+          height: 272,
+          borderRadius: 50
+        }).then(async (x) => {
+          const img = await loadImage10(x);
+          ctx.filter = "blur(10px)";
+          ctx.drawImage(img, 0, 565);
+          ctx.filter = "none";
+        });
+        const darknessSvg = generateSvg(`<svg width="1568" height="837" viewBox="0 0 1568 837" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="1568" height="512" rx="50" fill="#070707" fill-opacity="${option.imageDarkness / 100}"/>
+                <rect y="565" width="1568" height="272" rx="50" fill="#070707" fill-opacity="${option.imageDarkness / 100}"/>
+                </svg>`);
+        ctx.drawImage(await loadImage10(darknessSvg), 0, 0);
+      } catch (_err) {
+        const backgroundSvg = generateSvg(`<svg width="2458" height="837" viewBox="0 0 2458 837" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="1568" height="512" rx="50" fill="${option.backgroundColor}"/>
+                <rect y="565" width="1568" height="272" rx="50" fill="${option.backgroundColor}"/>
+                </svg>`);
+        const background = await loadImage10(backgroundSvg);
+        ctx.drawImage(background, 0, 0);
+      }
+    } else {
+      const backgroundSvg = generateSvg(`<svg width="2458" height="837" viewBox="0 0 2458 837" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="1568" height="512" rx="50" fill="${option.backgroundColor}"/>
+            <rect y="565" width="1568" height="272" rx="50" fill="${option.backgroundColor}"/>
+            </svg>`);
+      const background = await loadImage10(backgroundSvg);
+      ctx.drawImage(background, 0, 0);
+    }
+    ctx.drawImage(avatar, 1621, 0);
+    const titleText = option.type === "welcome" ? "WELCOME" : "GOODBYE";
+    ctx.fillStyle = `${option.accentColor}`;
+    ctx.font = "150px blacklisted";
+    ctx.fillText(titleText, 113, 230);
+    ctx.fillStyle = `${option.textColor}`;
+    ctx.font = "100px extrabold";
+    ctx.fillText(option.username, 113, 370);
+    ctx.fillStyle = `${option.secondaryTextColor}`;
+    ctx.font = "80px medium";
+    ctx.fillText(option.message, 113, 480);
+    const memberText = option.type === "welcome" ? `#${option.memberCount} MEMBER` : `${option.memberCount} MEMBERS`;
+    ctx.font = "45px blacklisted";
+    const memberTextWidth = ctx.measureText(memberText).width;
+    const memberBadgeWidth = memberTextWidth + 150;
+    const memberBadgeSvg = generateSvg(`<svg width="${memberBadgeWidth}" height="76" viewBox="0 0 ${memberBadgeWidth} 76" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <linearGradient id="memberBadgeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" style="stop-color:${option.accentColor};stop-opacity:0.3" />
+                <stop offset="100%" style="stop-color:${option.accentColor};stop-opacity:0.15" />
+            </linearGradient>
+        </defs>
+        <rect width="${memberBadgeWidth}" height="76" rx="38" fill="url(#memberBadgeGrad)" stroke="${option.accentColor}" stroke-width="3"/>
+        </svg>`);
+    const memberBadge = await loadImage10(memberBadgeSvg);
+    ctx.drawImage(memberBadge, 113, 650);
+    const usersIcon = await loadImage10(Icons.users({ color: option.accentColor, size: 50 }));
+    ctx.drawImage(usersIcon, 138, 660);
+    ctx.fillStyle = `${option.accentColor}`;
+    ctx.font = "45px blacklisted";
+    ctx.fillText(memberText, 205, 710);
+    const joinedText = option.type === "welcome" ? `JOINED ${option.joinedAt}` : `LEFT ${option.joinedAt}`;
+    ctx.font = "45px blacklisted";
+    const joinedTextWidth = ctx.measureText(joinedText).width;
+    const joinedBadgeWidth = joinedTextWidth + 150;
+    const joinedBadgeSvg = generateSvg(`<svg width="${joinedBadgeWidth}" height="76" viewBox="0 0 ${joinedBadgeWidth} 76" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <linearGradient id="joinedBadgeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" style="stop-color:${option.accentColor};stop-opacity:0.3" />
+                <stop offset="100%" style="stop-color:${option.accentColor};stop-opacity:0.15" />
+            </linearGradient>
+        </defs>
+        <rect width="${joinedBadgeWidth}" height="76" rx="38" fill="url(#joinedBadgeGrad)" stroke="${option.accentColor}" stroke-width="3"/>
+        </svg>`);
+    const joinedBadge = await loadImage10(joinedBadgeSvg);
+    const memberBadgeEnd = 113 + memberBadgeWidth + 350;
+    ctx.drawImage(joinedBadge, memberBadgeEnd, 650);
+    const calendarIcon = await loadImage10(Icons.calendar({ color: option.accentColor, size: 50 }));
+    ctx.drawImage(calendarIcon, memberBadgeEnd + 25, 660);
+    ctx.fillStyle = `${option.accentColor}`;
+    ctx.font = "45px blacklisted";
+    ctx.fillText(joinedText, memberBadgeEnd + 92, 710);
+    return canvas.toBuffer("image/png");
+  } catch (e) {
+    throw new Error(e.message);
+  }
+};
 export {
   AddedToQueue,
   Classic,
   ClassicPro,
   Dynamic,
+  Greeting,
+  GreetingV2,
   Lyrics,
   Mini,
   QueueList,

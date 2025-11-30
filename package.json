@@ -1,6 +1,6 @@
 {
     "name": "sylphacard",
-    "version": "3.0.5",
+    "version": "3.0.6",
     "description": "SylphaCard is one of the best canvas libraries to create a variety of music cards.",
     "main": "dist/index.js",
     "module": "dist/index.mjs",
@@ -57,6 +57,7 @@
     },
     "dependencies": {
         "@napi-rs/canvas": "latest",
-        "cropify": "latest"
+        "cropify": "latest",
+        "emoji-regex": "^10.6.0"
     }
 }

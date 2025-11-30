@@ -110,7 +110,7 @@ const Lyrics = async (options: LyricsOptions): Promise<Buffer> => {
 
         ctx.drawImage(thumbnail, 50, 50);
 
-        ctx.font = "30px extrabold";
+        ctx.font = "35px extrabold";
         ctx.fillStyle = options.titleColor;
         let title = options.title;
         let titleWidth = ctx.measureText(title).width;
@@ -120,7 +120,7 @@ const Lyrics = async (options: LyricsOptions): Promise<Buffer> => {
         }
         ctx.fillText(title, 180, 90);
 
-        ctx.font = "20px medium";
+        ctx.font = "25px medium";
         ctx.fillStyle = options.authorColor;
         let author = options.author;
         let authorWidth = ctx.measureText(author).width;
@@ -128,10 +128,10 @@ const Lyrics = async (options: LyricsOptions): Promise<Buffer> => {
             author = author.slice(0, -4) + "...";
             authorWidth = ctx.measureText(author).width;
         }
-        ctx.fillText(author, 180, 120);
+        ctx.fillText(author, 180, 130);
 
         ctx.fillStyle = options.lyricsColor;
-        ctx.font = "18px lyrics";
+        ctx.font = "20px lyrics";
 
         const lyricsLines = options.lyrics.split('\n');
         const maxLyricsWidth = canvasWidth - 100;

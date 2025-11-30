@@ -1,8 +1,10 @@
-const { Classic, ClassicPro, Dynamic, Mini, Upcoming, QueueList, AddedToQueue, Lyrics } = require('sylphacard');
-const fs = require('fs');
-
 
 (async () => {
+const { Classic, ClassicPro, Dynamic, Mini, Upcoming, QueueList, AddedToQueue, Lyrics, Greeting, GreetingV2 } = require('sylphacard');
+const fs = require('node:fs')
+
+
+
 // Common values
 const thumbnailImage = 'https://i.scdn.co/image/ab67616d0000b27359ae8cf65d498afdd5585634';
 const backgroundColor = '#2C2F33';
@@ -16,119 +18,119 @@ const authorColor = '#B9BBBE';
 const title = 'Margaret (feat. leachers)';
 const author = 'Lana Del Rey';
 
-// // Test Classic
-// const classic = await Classic({
-//     thumbnailImage,
-//     backgroundColor,
-//     backgroundImage: thumbnailImage,
-//     imageDarkness: 60,
-//     name: title,
-//     nameColor,
-//     author,
-//     authorColor,
-//     progress,
-//     startTime,
-//     endTime,
-//     progressColor,
-//     progressBarColor,
-// })
-//     fs.writeFileSync('assets/output-classic.png', classic);
-//     console.log('Classic test done.');
+// Test Classic
+const classic = await Classic({
+    thumbnailImage,
+    backgroundColor,
+    backgroundImage: thumbnailImage,
+    imageDarkness: 60,
+    name: title,
+    nameColor,
+    author,
+    authorColor,
+    progress,
+    startTime,
+    endTime,
+    progressColor,
+    progressBarColor,
+})
+    fs.writeFileSync('assets/Classic.png', classic);
+    console.log('Classic test done.');
 
 
 
-// // Test ClassicPro
-// const classic_pro = await ClassicPro({
-//     thumbnailImage,
-//     backgroundColor,
-//     backgroundImage: thumbnailImage,
-//     imageDarkness: 60,
-//     name: title,
-//     nameColor,
-//     author,
-//     authorColor,
-//     progress,
-//     startTime,
-//     endTime,
-//     progressColor,
-//     progressBarColor,
-// })
-//     fs.writeFileSync('assets/output-classicpro.png', classic_pro);
-//     console.log('Classic and ClassicPro tests done.');
+// Test ClassicPro
+const classic_pro = await ClassicPro({
+    thumbnailImage,
+    backgroundColor,
+    backgroundImage: thumbnailImage,
+    imageDarkness: 60,
+    name: title,
+    nameColor,
+    author,
+    authorColor,
+    progress,
+    startTime,
+    endTime,
+    progressColor,
+    progressBarColor,
+})
+    fs.writeFileSync('assets/ClassicPro.png', classic_pro);
+    console.log('ClassicPro test done.');
 
 
 
-// // Test Dynamic
-// const dynamic = await Dynamic({
-//     thumbnailImage,
-//     backgroundColor,
-//     backgroundImage: thumbnailImage,
-//     imageDarkness: 60,
-//     name: title,
-//     nameColor,
-//     author,
-//     authorColor,
-//     progress,
-//     progressColor,
-//     progressBarColor,
-// })
-//     fs.writeFileSync('assets/output-dynamic.png', dynamic);
-//     console.log('Dynamic test done.');
+// Test Dynamic
+const dynamic = await Dynamic({
+    thumbnailImage,
+    backgroundColor,
+    backgroundImage: thumbnailImage,
+    imageDarkness: 60,
+    name: title,
+    nameColor,
+    author,
+    authorColor,
+    progress,
+    progressColor,
+    progressBarColor,
+})
+    fs.writeFileSync('assets/Dynamic.png', dynamic);
+    console.log('Dynamic test done.');
 
 
 
-// // Test Mini
-// const mini = await Mini({
-//     thumbnailImage,
-//     backgroundColor,
-//     backgroundImage: thumbnailImage,
-//     imageDarkness: 60,
-//     menuColor: progressColor,
-//     progress,
-//     progressColor,
-//     progressBarColor,
-//     paused: false,
-// })
-//     fs.writeFileSync('assets/output-mini.png', mini);
-//     console.log('Mini test done.');
+// Test Mini
+const mini = await Mini({
+    thumbnailImage,
+    backgroundColor,
+    backgroundImage: thumbnailImage,
+    imageDarkness: 60,
+    menuColor: progressColor,
+    progress,
+    progressColor,
+    progressBarColor,
+    paused: false,
+})
+    fs.writeFileSync('assets/Mini.png', mini);
+    console.log('Mini test done.');
 
 
 
-// // Test Upcoming
-// const upcoming = await Upcoming({
-//     title,
-//     author,
-//     thumbnailImage,
-//     backgroundColor,
-//     backgroundImage: thumbnailImage,
-//     imageDarkness: 60,
-// })
-// fs.writeFileSync('assets/output-upcoming.png',upcoming);
-// console.log('Upcoming test done.');
+// Test Upcoming
+const upcoming = await Upcoming({
+    title,
+    author,
+    thumbnailImage,
+    backgroundColor,
+    backgroundImage: thumbnailImage,
+    imageDarkness: 60,
+})
+fs.writeFileSync('assets/Upcoming.png',upcoming);
+console.log('Upcoming test done.');
 
 
 
-// // Test QueueList
-// const queue_list = await QueueList({
-//     tracks: [
-//         { title: 'Song 1', author: 'Artist 1', thumbnailImage },
-//         { title: 'Song 2', author: 'Artist 2', thumbnailImage },
-//         { title: 'Song 3', author: 'Artist 3', thumbnailImage },
-//         { title: 'Song 4', author: 'Artist 3', thumbnailImage },
-//         { title: 'Song 5', author: 'Artist 3', thumbnailImage },
-//         { title: 'Song 6', author: 'Artist 3', thumbnailImage },
-//         { title: 'Song 7', author: 'Artist 3', thumbnailImage },
-//         { title: 'Song 8', author: 'Artist 3', thumbnailImage },
-//         { title: 'Song 9', author: 'Artist 3', thumbnailImage },
-//         { title: 'Song 10', author: 'Artist 3', thumbnailImage },
-//     ],
-//     title: 'Queue List',
-//     backgroundColor,
-//     backgroundImage: thumbnailImage,
-//     imageDarkness: 60,
-// })
-// fs.writeFileSync('assets/output-queue.png', queue_list);
-// console.log('QueueList test done.');
+// Test QueueList
+const queue_list = await QueueList({
+    tracks: [
+        { title: 'Song 1', author: 'Artist 1', thumbnailImage },
+        { title: 'Song 2', author: 'Artist 2', thumbnailImage },
+        { title: 'Song 3', author: 'Artist 3', thumbnailImage },
+        { title: 'Song 4', author: 'Artist 3', thumbnailImage },
+        { title: 'Song 5', author: 'Artist 3', thumbnailImage },
+        { title: 'Song 6', author: 'Artist 3', thumbnailImage },
+        { title: 'Song 7', author: 'Artist 3', thumbnailImage },
+        { title: 'Song 8', author: 'Artist 3', thumbnailImage },
+        { title: 'Song 9', author: 'Artist 3', thumbnailImage },
+        { title: 'Song 10', author: 'Artist 3', thumbnailImage },
+    ],
+    title: 'Queue List',
+    backgroundColor,
+    backgroundImage: thumbnailImage,
+    imageDarkness: 60,
+})
+fs.writeFileSync('assets/Queue.png', queue_list);
+console.log('QueueList test done.');
 
 
 
@@ -141,71 +143,117 @@ const addedtoqueue = await AddedToQueue({
     backgroundImage: thumbnailImage,
     imageDarkness: 60,
 })
-    fs.writeFileSync('../assets/output-addedtoqueue.png', addedtoqueue);
+    fs.writeFileSync('../assets/AddedToQueue.png', addedtoqueue);
     console.log('AddedToQueue test done.');
 
-// // Test Lyrics
-// const lyrics = await Lyrics({
-//     title,
-//     author,
-//     thumbnailImage,
-//     backgroundColor,
-//     backgroundImage: thumbnailImage,
-//     imageDarkness: 60,
-//     lyrics: `Ditekan dari sgala sisi
-// Seringkali hilang arti
-// Aku hidup untuk siapa?
+// Test Greeting
+const greeting = await Greeting({
+    type: "welcome",
+    username: "John Doe",
+    message: "Welcome to our awesome server!",
+    memberCount: "1,234",
+    avatarImage: "https://avatar.iran.liara.run/public",
+    backgroundImage: "https://i.pinimg.com/1200x/fe/ae/ae/feaeae20c78a15c0ff3c1b0e5ce36148.jpg",
+    backgroundColor: "#2ecc71",
+    primaryColor: "#27ae60",
+    textColor: "#FFFFFF",
+    imageDarkness: 40
+});
+    fs.writeFileSync('../assets/Greeting.png', greeting);
+    console.log('Greeting test done.');
 
-// Ku sudah tidak nyaman lagi
-// Bermimpi pun tahu diri
-// Apa sebaiknya pergi?
+// Test GreetingV2
+const greetingv2 = await GreetingV2({
+    type: "welcome",
+    username: "John Doe",
+    message: "Welcome to our awesome server!",
+    memberCount: "1,234",
+    avatarImage: "https://avatar.iran.liara.run/public",
+    backgroundImage: "https://i.pinimg.com/1200x/fe/ae/ae/feaeae20c78a15c0ff3c1b0e5ce36148.jpg",
+    backgroundColor: "#2ecc71",
+    primaryColor: "#27ae60",
+    textColor: "#FFFFFF",
+    imageDarkness: 40
+});
+    fs.writeFileSync('../assets/GreetingV2.png', greetingv2);
+    console.log('GreetingV2 test done.');
 
-// Jika semua bersandar padaku
-// Lalu aku bersandar kemana?
+// Test Lyrics
+const lyrics = await Lyrics({
+    title,
+    author,
+    thumbnailImage,
+    backgroundColor,
+    backgroundImage: thumbnailImage,
+    imageDarkness: 60,
+    lyrics: `This is a simple song, gonna write it for a friend
+My shirt is inside out, I'm messy with the pen
+He met Margaret on a rooftop, she was wearin' white
+And he was like, "I might be in trouble"
+He had flashes of the good life, he was like
+"Should I jump off this building now, or do it on the double?"
 
-// Mengalah
-// Walau bukan aku yang salah
-// Membisu
-// Saat semua sibuk beradu
-// Walau tak rela pun ku bantu
-// Berdoa ini semua
-// Berakhir di aku
+'Cause, baby, if your love is in trouble
+Baby, if your love in trouble
+Baby, if your love in trouble
 
-// Setiap hari ku mengais
-// Harta yang tak ku miliki
-// Apa yang aku miliki?
+When you know, you know
+When you know, you know
+It kinda makes me laugh, runnin' down that path
+When you're good, it's gold
+'Cause when you know, you know
 
-// Jika semua bersandar padaku
-// Lalu aku bersandar kemana?
+Words aren't my friends
+But thеy're red flags, they'rе white knights
+They're black eyes and they're blue lies
+If you're askin' yourself, "How do you know?"
+Then that's your answer, the answer is "No"
+You gotta run, gotta run, run, run, run like your head's on fire
+Run away like your head is on fire
 
-// Mengalah
-// Walau bukan aku yang salah
-// Membisu
-// Saat semua sibuk beradu
-// Walau tak rela pun ku bantu
-// Berdoa ini semua
-// Berakhir di aku
-// Berakhir di aku
-// Berakhir di aku
-// Berakhir di Aku
-// Berakhir di Aku
+'Cause, baby, if your love in trouble
+Baby, if your love in trouble
+Baby, if your love in trouble
 
-// Walau tak rela pun ku bantu
-// Berdoa ini semua
-// Berakhir di aku
+When you know, you know
+When you know, you know
+It kinda makes me laugh, runnin' down that path
+When you're good, it's gold
+'Cause when you know, you know
 
-// Mengalah
-// Walau bukan aku yang salah
-// Membisu
-// Saat semua sibuk beradu
-// Walau tak rela pun ku bantu
-// Berdoa ini semua
-// Berakhir
-// Berakhir di Aku
-// Berakhir di Aku`,
-// })
-// fs.writeFileSync('assets/output-lyrics.png', lyrics);
-// console.log('Lyrics test done.');
+And when you're old, you're old
+Like Hollywood and me, the diamond on your ring
+The soul that you bring to the table
+One that makes me sing
+In a minor key
 
-// console.log('All tests completed.');
+'Cause when you know, you know
+When you know, you know
+
+So if you don't know, don't give up
+'Cause you never know what the new day might bring
+
+Maybe tomorrow you'll know
+Maybe tomorrow you'll know
+Maybe tomorrow you'll know
+
+I mean, join the party
+By the way, the party is December 18
+Aight, let's waltz this out, 'cause
+
+'Cause when you know, you know
+When you're old, you're old
+Like Hollywood and me, the diamond on your ring
+The soul that you bring to the table
+One that makes me sing
+In a minor key (key)
+
+Diamond on your ring
+'Cause when you know, you know
+When you know, you know`,
+})
+fs.writeFileSync('assets/Lyrics.png', lyrics);
+console.log('Lyrics test done.');
+
+console.log('All tests completed.');
 })();

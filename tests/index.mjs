@@ -1,4 +1,4 @@
-import { Classic, ClassicPro, Dynamic, Mini, Upcoming, QueueList, AddedToQueue, Lyrics } from 'sylphacard';
+import { Classic, ClassicPro, Dynamic, Mini, Upcoming, QueueList, AddedToQueue, Lyrics, Greeting, GreetingV2 } from 'sylphacard';
 import fs from 'fs';
 
 // Common values
@@ -30,7 +30,7 @@ Classic({
     progressColor,
     progressBarColor,
 }).then(x => {
-    fs.writeFileSync('../assets/output-classic.png', x);
+    fs.writeFileSync('../assets/Classic.png', x);
 });
 
 // Test ClassicPro
@@ -49,7 +49,7 @@ ClassicPro({
     progressColor,
     progressBarColor,
 }).then(x => {
-    fs.writeFileSync('../assets/output-classicpro.png', x);
+    fs.writeFileSync('../assets/ClassicPro.png', x);
 });
 
 // Test Dynamic
@@ -66,7 +66,7 @@ Dynamic({
     progressColor,
     progressBarColor,
 }).then(x => {
-    fs.writeFileSync('../assets/output-dynamic.png', x);
+    fs.writeFileSync('../assets/Dynamic.png', x);
 });
 
 // Test Mini
@@ -81,7 +81,7 @@ Mini({
     progressBarColor,
     paused: false,
 }).then(x => {
-    fs.writeFileSync('../assets/output-mini.png', x);
+    fs.writeFileSync('../assets/Mini.png', x);
 });
 
 // Test Upcoming
@@ -93,7 +93,7 @@ Upcoming({
     backgroundImage: thumbnailImage,
     imageDarkness: 60,
 }).then(x => {
-    fs.writeFileSync('../assets/output-upcoming.png', x);
+    fs.writeFileSync('../assets/Upcoming.png', x);
 });
 
 // Test QueueList
@@ -115,7 +115,7 @@ QueueList({
     backgroundImage: thumbnailImage,
     imageDarkness: 60,
 }).then(x => {
-    fs.writeFileSync('../assets/output-queue.png', x);
+    fs.writeFileSync('../assets/Queue.png', x);
 });
 
 
@@ -128,7 +128,7 @@ AddedToQueue({
     backgroundImage: thumbnailImage,
     imageDarkness: 60,
 }).then(x => {
-    fs.writeFileSync('../assets/output-addedtoqueue.png', x);
+    fs.writeFileSync('../assets/AddedToQueue.png', x);
 });
 
 // Test Lyrics
@@ -139,58 +139,98 @@ Lyrics({
     backgroundColor,
     backgroundImage: thumbnailImage,
     imageDarkness: 60,
-    lyrics: `Ditekan dari sgala sisi
-Seringkali hilang arti
-Aku hidup untuk siapa?
+    lyrics: `This is a simple song, gonna write it for a friend
+My shirt is inside out, I'm messy with the pen
+He met Margaret on a rooftop, she was wearin' white
+And he was like, "I might be in trouble"
+He had flashes of the good life, he was like
+"Should I jump off this building now, or do it on the double?"
 
-Ku sudah tidak nyaman lagi
-Bermimpi pun tahu diri
-Apa sebaiknya pergi?
+'Cause, baby, if your love is in trouble
+Baby, if your love in trouble
+Baby, if your love in trouble
 
-Jika semua bersandar padaku
-Lalu aku bersandar kemana?
+When you know, you know
+When you know, you know
+It kinda makes me laugh, runnin' down that path
+When you're good, it's gold
+'Cause when you know, you know
 
-Mengalah
-Walau bukan aku yang salah
-Membisu
-Saat semua sibuk beradu
-Walau tak rela pun ku bantu
-Berdoa ini semua
-Berakhir di aku
+Words aren't my friends
+But thеy're red flags, they'rе white knights
+They're black eyes and they're blue lies
+If you're askin' yourself, "How do you know?"
+Then that's your answer, the answer is "No"
+You gotta run, gotta run, run, run, run like your head's on fire
+Run away like your head is on fire
 
-Setiap hari ku mengais
-Harta yang tak ku miliki
-Apa yang aku miliki?
+'Cause, baby, if your love in trouble
+Baby, if your love in trouble
+Baby, if your love in trouble
 
-Jika semua bersandar padaku
-Lalu aku bersandar kemana?
+When you know, you know
+When you know, you know
+It kinda makes me laugh, runnin' down that path
+When you're good, it's gold
+'Cause when you know, you know
 
-Mengalah
-Walau bukan aku yang salah
-Membisu
-Saat semua sibuk beradu
-Walau tak rela pun ku bantu
-Berdoa ini semua
-Berakhir di aku
-Berakhir di aku
-Berakhir di aku
-Berakhir di Aku
-Berakhir di Aku
+And when you're old, you're old
+Like Hollywood and me, the diamond on your ring
+The soul that you bring to the table
+One that makes me sing
+In a minor key
 
-Walau tak rela pun ku bantu
-Berdoa ini semua
-Berakhir di aku
+'Cause when you know, you know
+When you know, you know
 
-Mengalah
-Walau bukan aku yang salah
-Membisu
-Saat semua sibuk beradu
-Walau tak rela pun ku bantu
-Berdoa ini semua
-Berakhir
-Berakhir di Aku
-Berakhir di Aku`,
+So if you don't know, don't give up
+'Cause you never know what the new day might bring
+
+Maybe tomorrow you'll know
+Maybe tomorrow you'll know
+Maybe tomorrow you'll know
+
+I mean, join the party
+By the way, the party is December 18
+Aight, let's waltz this out, 'cause
+
+'Cause when you know, you know
+When you're old, you're old
+Like Hollywood and me, the diamond on your ring
+The soul that you bring to the table
+One that makes me sing
+In a minor key (key)
+
+Diamond on your ring
+'Cause when you know, you know
+When you know, you know`,
 }).then(x => {
-    fs.writeFileSync('../assets/output-lyrics.png', x);
+    fs.writeFileSync('../assets/Lyrics.png', x);
 });
+
+// Test Welcome
+await Greeting({
+    type: "welcome",
+    username: "John Doe",
+    message: "Welcome to our awesome server!",
+    memberCount: "1,234",
+    avatarImage: "https://avatar.iran.liara.run/public",
+    backgroundImage: "https://i.pinimg.com/1200x/fe/ae/ae/feaeae20c78a15c0ff3c1b0e5ce36148.jpg",
+}).then(x => {
+    fs.writeFileSync('../assets/Greeting.png', x);
+})
+
+// Test Welcome
+await GreetingV2({
+    type: "welcome",
+    username: "John Doe",
+    message: "Glad to have you!",
+    memberCount: "1,234",
+    joinedAt: "Dec 1, 2024",
+    avatarImage: "https://avatar.iran.liara.run/public",
+    backgroundImage: "https://i.pinimg.com/1200x/fe/ae/ae/feaeae20c78a15c0ff3c1b0e5ce36148.jpg",
+}).then(x => {
+    fs.writeFileSync('../assets/GreetingV2.png', x);
+})
+
 console.log('All tests completed.');
