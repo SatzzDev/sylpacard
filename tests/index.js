@@ -7,32 +7,27 @@ const fs = require('node:fs')
 
 // Common values
 const thumbnailImage = 'https://i.scdn.co/image/ab67616d0000b27359ae8cf65d498afdd5585634';
-const backgroundColor = '#2C2F33';
-const progressColor = '#5865F2';
-const progressBarColor = '#2C2F33';
 const startTime = "00:00";
 const endTime = "05:40";
 const progress = 0;
-const nameColor = '#5865F2';
-const authorColor = '#B9BBBE';
 const title = 'Margaret (feat. leachers)';
 const author = 'Lana Del Rey';
 
 // Test Classic
 const classic = await Classic({
     thumbnailImage,
-    backgroundColor,
+    
     backgroundImage: thumbnailImage,
     imageDarkness: 60,
     name: title,
-    nameColor,
+    
     author,
-    authorColor,
+    
     progress,
     startTime,
     endTime,
-    progressColor,
-    progressBarColor,
+    
+    
 })
     fs.writeFileSync('assets/Classic.png', classic);
     console.log('Classic test done.');
@@ -42,18 +37,18 @@ const classic = await Classic({
 // Test ClassicPro
 const classic_pro = await ClassicPro({
     thumbnailImage,
-    backgroundColor,
+    
     backgroundImage: thumbnailImage,
     imageDarkness: 60,
     name: title,
-    nameColor,
+    
     author,
-    authorColor,
+    
     progress,
     startTime,
     endTime,
-    progressColor,
-    progressBarColor,
+    
+    
 })
     fs.writeFileSync('assets/ClassicPro.png', classic_pro);
     console.log('ClassicPro test done.');
@@ -63,16 +58,16 @@ const classic_pro = await ClassicPro({
 // Test Dynamic
 const dynamic = await Dynamic({
     thumbnailImage,
-    backgroundColor,
+    
     backgroundImage: thumbnailImage,
     imageDarkness: 60,
     name: title,
-    nameColor,
+    
     author,
-    authorColor,
+    
     progress,
-    progressColor,
-    progressBarColor,
+    
+    
 })
     fs.writeFileSync('assets/Dynamic.png', dynamic);
     console.log('Dynamic test done.');
@@ -82,13 +77,13 @@ const dynamic = await Dynamic({
 // Test Mini
 const mini = await Mini({
     thumbnailImage,
-    backgroundColor,
+    
     backgroundImage: thumbnailImage,
     imageDarkness: 60,
-    menuColor: progressColor,
+    menuColor: 
     progress,
-    progressColor,
-    progressBarColor,
+    
+    
     paused: false,
 })
     fs.writeFileSync('assets/Mini.png', mini);
@@ -101,7 +96,7 @@ const upcoming = await Upcoming({
     title,
     author,
     thumbnailImage,
-    backgroundColor,
+    
     backgroundImage: thumbnailImage,
     imageDarkness: 60,
 })
@@ -125,7 +120,7 @@ const queue_list = await QueueList({
         { title: 'Song 10', author: 'Artist 3', thumbnailImage },
     ],
     title: 'Queue List',
-    backgroundColor,
+    
     backgroundImage: thumbnailImage,
     imageDarkness: 60,
 })
@@ -139,7 +134,7 @@ const addedtoqueue = await AddedToQueue({
     title,
     author,
     thumbnailImage,
-    backgroundColor,
+    
     backgroundImage: thumbnailImage,
     imageDarkness: 60,
 })
@@ -183,7 +178,7 @@ const lyrics = await Lyrics({
     title,
     author,
     thumbnailImage,
-    backgroundColor,
+    
     backgroundImage: thumbnailImage,
     imageDarkness: 60,
     lyrics: `This is a simple song, gonna write it for a friend

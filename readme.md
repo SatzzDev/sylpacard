@@ -123,7 +123,7 @@ SylphaCard is the #1 canvas library to create music cards with awesome themes.
 })();
 ```
 ---
-![dynamic](https://raw.githubusercontent.com/SatzzDev/sylpacard/main/assets/Mini.png)
+![dynamic](https://raw.githubusercontent.com/SatzzDev/sylpacard/main/assets/Dynamic.png)
 ---
 
 ## Mini
@@ -148,7 +148,7 @@ SylphaCard is the #1 canvas library to create music cards with awesome themes.
 })();
 ```
 ---
-![mini](https://raw.githubusercontent.com/SatzzDev/sylpacard/main/assets/MIni.png)
+![mini](https://raw.githubusercontent.com/SatzzDev/sylpacard/main/assets/Mini.png)
 ---
 
 ## Upcoming
@@ -324,4 +324,59 @@ When you know, you know`,
 ```
 ---
 ![lyrics](https://raw.githubusercontent.com/SatzzDev/sylpacard/main/assets/Lyrics.png)
+---
+
+## Greeting
+
+```js
+(async () => {
+    const { Greeting } = require('sylphacard');
+    const fs = require('fs');
+
+    const greeting = await Greeting({
+        type: "welcome",
+        username: "John Doe",
+        message: "Welcome to our awesome server!",
+        memberCount: "1,234",
+        avatarImage: "https://avatar.iran.liara.run/public",
+        backgroundImage: "https://i.pinimg.com/1200x/fe/ae/ae/feaeae20c78a15c0ff3c1b0e5ce36148.jpg",
+        backgroundColor: "#2ecc71",
+        primaryColor: "#27ae60",
+        textColor: "#FFFFFF",
+        imageDarkness: 40
+    });
+
+    fs.writeFileSync('greeting.png', greeting);
+})();
+```
+---
+![greeting](https://raw.githubusercontent.com/SatzzDev/sylpacard/main/assets/Greeting.png)
+---
+
+## GreetingV2
+
+```js
+(async () => {
+    const { GreetingV2 } = require('sylphacard');
+    const fs = require('fs');
+
+    const greetingv2 = await GreetingV2({
+        type: "welcome",
+        username: "John Doe",
+        message: "Welcome to our awesome server!",
+        memberCount: "1,234",
+        joinedAt: "Jan 15, 2024",
+        avatarImage: "https://avatar.iran.liara.run/public",
+        backgroundImage: "https://i.pinimg.com/1200x/fe/ae/ae/feaeae20c78a15c0ff3c1b0e5ce36148.jpg",
+        backgroundColor: "#2ecc71",
+        textColor: "#FFFFFF",
+        accentColor: "#00d9ff",
+        imageDarkness: 40
+    });
+
+    fs.writeFileSync('greetingv2.png', greetingv2);
+})();
+```
+---
+![greetingv2](https://raw.githubusercontent.com/SatzzDev/sylpacard/main/assets/GreetingV2.png)
 ---
