@@ -87,11 +87,6 @@ const Classic = async (option: ClassicOption): Promise<Buffer> => {
 
         if (option.backgroundImage) {
             try {
-                const darknessSvg = generateSvg(`<svg width="1568" height="837" viewBox="0 0 1568 837" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect width="1568" height="512" rx="50" fill="#070707" fill-opacity="${option.imageDarkness / 100}"/>
-                <rect y="565" width="1568" height="272" rx="50" fill="#070707" fill-opacity="${option.imageDarkness / 100}"/>
-                </svg>`);
-
                 const image = await cropImage({
                     imagePath: option.backgroundImage,
                     width: 1568,
@@ -99,6 +94,7 @@ const Classic = async (option: ClassicOption): Promise<Buffer> => {
                     cropCenter: true,
                 });
 
+                // Draw top section with blur
                 await cropImage({
                     // @ts-ignore
                     imagePath: image,
@@ -108,9 +104,15 @@ const Classic = async (option: ClassicOption): Promise<Buffer> => {
                     height: 512,
                     borderRadius: 50,
                 }).then(async (x: any) => {
-                    ctx.drawImage(await loadImage(x), 0, 0);
+                    const img = await loadImage(x);
+                    
+                    // Apply blur effect
+                    ctx.filter = 'blur(20px)';
+                    ctx.drawImage(img, 0, 0);
+                    ctx.filter = 'none';
                 });
 
+                // Draw bottom section with blur
                 await cropImage({
                     // @ts-ignore
                     imagePath: image,
@@ -120,8 +122,19 @@ const Classic = async (option: ClassicOption): Promise<Buffer> => {
                     height: 272,
                     borderRadius: 50,
                 }).then(async (x: any) => {
-                    ctx.drawImage(await loadImage(x), 0, 565);
+                    const img = await loadImage(x);
+                    
+                    // Apply blur effect
+                    ctx.filter = 'blur(20px)';
+                    ctx.drawImage(img, 0, 565);
+                    ctx.filter = 'none';
                 });
+
+                // Apply darkness overlay
+                const darknessSvg = generateSvg(`<svg width="1568" height="837" viewBox="0 0 1568 837" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="1568" height="512" rx="50" fill="#070707" fill-opacity="${option.imageDarkness / 100}"/>
+                <rect y="565" width="1568" height="272" rx="50" fill="#070707" fill-opacity="${option.imageDarkness / 100}"/>
+                </svg>`);
 
                 ctx.drawImage(await loadImage(darknessSvg), 0, 0);
             } catch (_err) {

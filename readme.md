@@ -1,35 +1,3 @@
-<img src="https://ik.imagekit.io/unburn/Musicard.svg" />
-
-<p align="center">Musicard is one of the best canvas libraries to create a variety of music cards.</p>
-
-<p align="center">
-    <a href="https://github.com/unburn/musicard/"><b>Github</b></a> •
-    <a href="https://discord.gg/66uGX7t4ww"><b>Support</b></a>
-</p>
-
-<div align="center">
-
-[![NPM Version](https://img.shields.io/npm/v/musicard?style=flat-square&color=%23FF7A00)](https://www.npmjs.com/package/musicard)
-[![NPM Downloads](https://img.shields.io/npm/dw/musicard?style=flat-square&color=%23FF7A00)](https://www.npmjs.com/package/musicard)
-[![NPM License](https://img.shields.io/npm/l/musicard?style=flat-square&color=%23FF7A00)](https://github.com/unburn/musicard/blob/main/LICENSE)
-[![GitHub Repo stars](https://img.shields.io/github/stars/unburn/musicard?style=flat-square&color=%23FF7A00)](https://github.com/unburn/musicard)
-
-</div>
-
-<div align="center">
-<a href="https://github.com/sponsors/flameface"><img src="https://ik.imagekit.io/unburn/SupportMusicard.svg"/></a>
-</div>
-
-# Installation
-
-```js
-// using npm
-npm install musicard
-
-// using yarn
-yarn add musicard
-```
-
 # Usage
 
 You can use the Musicard package in your Discord bots, websites, etc.
@@ -67,38 +35,11 @@ return message.channel.send({
 })
 ```
 
-## Custom Background (New)
-
-Use a custom image background and also adjust the darkness of the image.
-
-```js
-import { Classic } from 'musicard';
-import fs from 'fs';
-
-Classic({
-    thumbnailImage:
-        'https://cdn.discordapp.com/attachments/1220001571228880917/1220001571690123284/01.png?ex=660d5a01&is=65fae501&hm=a8cfb44844e61aa0fd01767cd363af048df28966c30d7b04a59f27fa45cf69c4&',
-    backgroundImage:
-        'https://cdn.discordapp.com/attachments/1220001571228880917/1220001571690123284/01.png?ex=660d5a01&is=65fae501&hm=a8cfb44844e61aa0fd01767cd363af048df28966c30d7b04a59f27fa45cf69c4&',
-    imageDarkness: 60,
-    nameColor: '#DC92FF',
-    progressColor: '#DC92FF',
-    progressBarColor: '#2B2B2B',
-    progress: 50,
-}).then(x => {
-    fs.writeFileSync('output.png', x);
-});
-```
-
-![custom](https://ik.imagekit.io/unburn/custom-output.png?updatedAt=1710995171966)
-
 # Themes
 
 Musicard is the #1 canvas library to create music cards with awesome themes.
 
 ## Classic
-
-![classic](/assets/output-classic.png)
 
 ```js
 (async () => {
@@ -107,14 +48,14 @@ Musicard is the #1 canvas library to create music cards with awesome themes.
 
     const musicard = await Classic({
         thumbnailImage:
-            'https://lh3.googleusercontent.com/yavtBZZnoxaY21GSS_VIKSg0mvzu1b0r6arH8xvWVskoMaZ5ww3iDMgBNujnIWCt7MOkDsrKapSGCfc=w544-h544-l90-rj',
+            'https://i.scdn.co/image/ab67616d0000b2734ae1c2813cfa6d10c73f4661',
         backgroundColor: '#070707',
         progress: 10,
         progressColor: '#FF7A00',
         progressBarColor: '#5F2D00',
-        name: 'Burn',
+        name: 'Berakhir DI Aku',
         nameColor: '#FF7A00',
-        author: 'By 2WEI & Edda Hayes',
+        author: 'By Idgitaf',
         authorColor: '#696969',
         startTime: '0:00',
         endTime: '4:00',
@@ -124,12 +65,11 @@ Musicard is the #1 canvas library to create music cards with awesome themes.
     fs.writeFileSync('musicard.png', musicard);
 })();
 ```
-
+---
+![classic](/assets/output-classic.png)
 ---
 
 ## Classic Pro
-
-![classicpro](/assets/output-classicpro.png)
 
 ```js
 (async () => {
@@ -138,14 +78,14 @@ Musicard is the #1 canvas library to create music cards with awesome themes.
 
     const musicard = await ClassicPro({
         thumbnailImage:
-            'https://lh3.googleusercontent.com/yavtBZZnoxaY21GSS_VIKSg0mvzu1b0r6arH8xvWVskoMaZ5ww3iDMgBNujnIWCt7MOkDsrKapSGCfc=w544-h544-l90-rj',
+            'https://i.scdn.co/image/ab67616d0000b2734ae1c2813cfa6d10c73f4661',
         backgroundColor: '#070707',
         progress: 10,
         progressColor: '#FF7A00',
         progressBarColor: '#5F2D00',
-        name: 'Burn',
+        name: 'Berakhir DI Aku',
         nameColor: '#FF7A00',
-        author: 'By 2WEI & Edda Hayes',
+        author: 'By Idgitaf',
         authorColor: '#696969',
         startTime: '0:00',
         endTime: '4:00',
@@ -155,12 +95,11 @@ Musicard is the #1 canvas library to create music cards with awesome themes.
     fs.writeFileSync('musicard.png', musicard);
 })();
 ```
-
+---
+![classicpro](/assets/output-classicpro.png)
 ---
 
 ## Dynamic
-
-![dynamic](/assets/output-dynamic.png)
 
 ```js
 (async () => {
@@ -169,26 +108,25 @@ Musicard is the #1 canvas library to create music cards with awesome themes.
 
     const musicard = await Dynamic({
         thumbnailImage:
-            'https://lh3.googleusercontent.com/yavtBZZnoxaY21GSS_VIKSg0mvzu1b0r6arH8xvWVskoMaZ5ww3iDMgBNujnIWCt7MOkDsrKapSGCfc=w544-h544-l90-rj',
+            'https://i.scdn.co/image/ab67616d0000b2734ae1c2813cfa6d10c73f4661',
         backgroundColor: '#070707',
         progress: 10,
         progressColor: '#FF7A00',
         progressBarColor: '#5F2D00',
-        name: 'Burn',
+        name: 'Berakhir DI Aku',
         nameColor: '#FF7A00',
-        author: 'By 2WEI & Edda Hayes',
+        author: 'By Idgitaf',
         authorColor: '#696969',
     });
 
     fs.writeFileSync('musicard.png', musicard);
 })();
 ```
-
+---
+![dynamic](/assets/output-dynamic.png)
 ---
 
 ## Mini
-
-![mini](/assets/output-mini.png)
 
 ```js
 (async () => {
@@ -197,7 +135,7 @@ Musicard is the #1 canvas library to create music cards with awesome themes.
 
     const musicard = await Mini({
         thumbnailImage:
-            'https://lh3.googleusercontent.com/yavtBZZnoxaY21GSS_VIKSg0mvzu1b0r6arH8xvWVskoMaZ5ww3iDMgBNujnIWCt7MOkDsrKapSGCfc=w544-h544-l90-rj',
+            'https://i.scdn.co/image/ab67616d0000b2734ae1c2813cfa6d10c73f4661',
         backgroundColor: '#070707',
         progress: 10,
         progressColor: '#FF7A00',
@@ -209,12 +147,11 @@ Musicard is the #1 canvas library to create music cards with awesome themes.
     fs.writeFileSync('musicard.png', musicard);
 })();
 ```
-
+---
+![mini](/assets/output-mini.png)
 ---
 
 ## Upcoming
-
-![Upcoming](/assets/output-upcoming.png)
 
 ```js
 (async () => {
@@ -233,12 +170,11 @@ Musicard is the #1 canvas library to create music cards with awesome themes.
     fs.writeFileSync('musicard.png', musicard);
 })();
 ```
-
+---
+![Upcoming](/assets/output-upcoming.png)
 ---
 
 ## Queue
-
-![queue](/assets/output-queue.png)
 
 ```js
 (async () => {
@@ -248,9 +184,9 @@ Musicard is the #1 canvas library to create music cards with awesome themes.
     const musicard = await QueueList({
         tracks: [
             {
-                title: 'Burn',
-                author: '2WEI & Edda Hayes',
-                thumbnailImage: 'https://lh3.googleusercontent.com/yavtBZZnoxaY21GSS_VIKSg0mvzu1b0r6arH8xvWVskoMaZ5ww3iDMgBNujnIWCt7MOkDsrKapSGCfc=w544-h544-l90-rj'
+                title: 'Berakhir DI Aku',
+                author: 'Idgitaf',
+                thumbnailImage: 'https://i.scdn.co/image/ab67616d0000b2734ae1c2813cfa6d10c73f4661'
             },
             {
                 title: 'Another Song',
@@ -266,38 +202,12 @@ Musicard is the #1 canvas library to create music cards with awesome themes.
     fs.writeFileSync('musicard.png', musicard);
 })();
 ```
-
+---
+![queue](/assets/output-queue.png)
 ---
 
-## Most Played
-
-![mostplayed](/assets/output-mostplayed.png)
-
-```js
-(async () => {
-    const { MostPlayed } = require('musicard');
-    const fs = require('fs');
-
-    const musicard = await MostPlayed({
-        title: 'Burn',
-        author: '2WEI & Edda Hayes',
-        thumbnailImage: 'https://lh3.googleusercontent.com/yavtBZZnoxaY21GSS_VIKSg0mvzu1b0r6arH8xvWVskoMaZ5ww3iDMgBNujnIWCt7MOkDsrKapSGCfc=w544-h544-l90-rj',
-        playCount: 1000,
-        titleColor: '#FFFFFF',
-        authorColor: '#FFFFFF',
-        playCountColor: '#FF7A00',
-        backgroundColor: '#070707'
-    });
-
-    fs.writeFileSync('musicard.png', musicard);
-})();
-```
-
----
 
 ## Added to Queue
-
-![addedtoqueue](/assets/output-addedtoqueue.png)
 
 ```js
 (async () => {
@@ -305,9 +215,9 @@ Musicard is the #1 canvas library to create music cards with awesome themes.
     const fs = require('fs');
 
     const musicard = await AddedToQueue({
-        title: 'Burn',
-        author: '2WEI & Edda Hayes',
-        thumbnailImage: 'https://lh3.googleusercontent.com/yavtBZZnoxaY21GSS_VIKSg0mvzu1b0r6arH8xvWVskoMaZ5ww3iDMgBNujnIWCt7MOkDsrKapSGCfc=w544-h544-l90-rj',
+        title: 'Berakhir DI Aku',
+        author: 'Idgitaf',
+        thumbnailImage: 'https://i.scdn.co/image/ab67616d0000b2734ae1c2813cfa6d10c73f4661',
         message: 'Added to Queue',
         titleColor: '#FFFFFF',
         authorColor: '#FFFFFF',
@@ -318,14 +228,83 @@ Musicard is the #1 canvas library to create music cards with awesome themes.
     fs.writeFileSync('musicard.png', musicard);
 })();
 ```
+---
+![addedtoqueue](/assets/output-addedtoqueue.png)
+---
 
-# Resource
 
-Pull request to add your project here.
+## Lyrics
 
-| Riffy Music Bot | https://github.com/riffy-team/riffy-music-bot |
-| --------------- | --------------------------------------------- |
+```js
+(async () => {
+    const { Lyrics } = require('musicard');
+    const fs = require('fs');
 
-# License
+    const musicard = await Lyrics({
+        title: 'Berakhir DI Aku',
+        author: 'Idgitaf',
+        thumbnailImage: 'https://i.scdn.co/image/ab67616d0000b2734ae1c2813cfa6d10c73f4661',
+        message: 'Added to Queue',
+        titleColor: '#FFFFFF',
+        authorColor: '#FFFFFF',
+        messageColor: '#00FF00',
+        backgroundColor: '#070707'
+        lyrics: `Ditekan dari sgala sisi
+Seringkali hilang arti
+Aku hidup untuk siapa?
 
-[GPL](https://github.com/unburn/musicard/blob/main/LICENSE)
+Ku sudah tidak nyaman lagi
+Bermimpi pun tahu diri
+Apa sebaiknya pergi?
+
+Jika semua bersandar padaku
+Lalu aku bersandar kemana?
+
+Mengalah
+Walau bukan aku yang salah
+Membisu
+Saat semua sibuk beradu
+Walau tak rela pun ku bantu
+Berdoa ini semua
+Berakhir di aku
+
+Setiap hari ku mengais
+Harta yang tak ku miliki
+Apa yang aku miliki?
+
+Jika semua bersandar padaku
+Lalu aku bersandar kemana?
+
+Mengalah
+Walau bukan aku yang salah
+Membisu
+Saat semua sibuk beradu
+Walau tak rela pun ku bantu
+Berdoa ini semua
+Berakhir di aku
+Berakhir di aku
+Berakhir di aku
+Berakhir di Aku
+Berakhir di Aku
+
+Walau tak rela pun ku bantu
+Berdoa ini semua
+Berakhir di aku
+
+Mengalah
+Walau bukan aku yang salah
+Membisu
+Saat semua sibuk beradu
+Walau tak rela pun ku bantu
+Berdoa ini semua
+Berakhir
+Berakhir di Aku
+Berakhir di Aku`,
+    });
+
+    fs.writeFileSync('musicard.png', musicard);
+})();
+```
+---
+![lyrics](/assets/output-lyrics.png)
+---

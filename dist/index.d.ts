@@ -150,53 +150,6 @@ type QueueListOptions = {
      */
     imageDarkness?: number;
 };
-type MostPlayedOptions = {
-    /**
-     * Title of the most played track
-     */
-    title: string;
-    /**
-     * Color For the Track Title
-     * @default #FFFFFF(White)
-     */
-    titleColor?: string;
-    /**
-     * Author of the track
-     */
-    author: string;
-    /**
-     * Color For the Track's Author
-     * @default #FFFFFF(White)
-     */
-    authorColor?: string;
-    /**
-     * Thumbnail of the track
-     */
-    thumbnailImage?: Parameters<typeof loadImage>[0];
-    /**
-     * Play count of the track
-     */
-    playCount: number;
-    /**
-     * Color for play count text
-     * @default #FF7A00
-     */
-    playCountColor?: string;
-    /**
-     * Background Color
-     * @default #070707
-     */
-    backgroundColor?: string;
-    /**
-     * Background Image
-     * @optional
-     */
-    backgroundImage?: Parameters<typeof loadImage>[0];
-    /**
-     * Darkness for the background Image.
-     */
-    imageDarkness?: number;
-};
 type AddedToQueueOptions = {
     /**
      * Title of the track added to queue
@@ -244,6 +197,67 @@ type AddedToQueueOptions = {
      * Darkness for the background Image.
      */
     imageDarkness?: number;
+    /**
+     * Badge Background Color
+     * @default #ffffff33
+     */
+    badgeBg?: string;
+    /**
+     * Badge Border Color
+     * @default #ffffff55
+     * /
+     * Badge Text Color
+     * @default #fff
+     */
+    badgeText?: string;
+    badgeBorder?: string;
+};
+type LyricsOptions = {
+    /**
+     * Title of the track
+     */
+    title: string;
+    /**
+     * Color For the Track Title
+     * @default #FFFFFF(White)
+     */
+    titleColor?: string;
+    /**
+     * Author of the track
+     */
+    author: string;
+    /**
+     * Color For the Track's Author
+     * @default #FFFFFF(White)
+     */
+    authorColor?: string;
+    /**
+     * Thumbnail of the track
+     */
+    thumbnailImage?: Parameters<typeof loadImage>[0];
+    /**
+     * Lyrics of the track
+     */
+    lyrics: string;
+    /**
+     * Color for the lyrics
+     * @default #FFFFFF(White)
+     */
+    lyricsColor?: string;
+    /**
+     * Background Color
+     * @default #070707
+     */
+    backgroundColor?: string;
+    /**
+     * Background Image
+     * @optional
+     */
+    backgroundImage?: Parameters<typeof loadImage>[0];
+    /**
+     * Darkness for the background Image.
+     */
+    imageDarkness?: number;
 };
 
 declare const Classic: (option: ClassicOption) => Promise<Buffer>;
@@ -258,8 +272,8 @@ declare const Upcoming: (options: UpcomingOptions) => Promise<Buffer>;
 
 declare const QueueList: (options: QueueListOptions) => Promise<Buffer>;
 
-declare const MostPlayed: (options: MostPlayedOptions) => Promise<Buffer>;
-
 declare const AddedToQueue: (options: AddedToQueueOptions) => Promise<Buffer>;
 
-export { AddedToQueue, type AddedToQueueOptions, Classic, type ClassicOption, ClassicPro, type ClassicProOption, Dynamic, type DynamicOption, Mini, type MiniOption, MostPlayed, type MostPlayedOptions, QueueList, type QueueListOptions, Upcoming, type UpcomingOptions };
+declare const Lyrics: (options: LyricsOptions) => Promise<Buffer>;
+
+export { AddedToQueue, type AddedToQueueOptions, Classic, type ClassicOption, ClassicPro, type ClassicProOption, Dynamic, type DynamicOption, Lyrics, type LyricsOptions, Mini, type MiniOption, QueueList, type QueueListOptions, Upcoming, type UpcomingOptions };

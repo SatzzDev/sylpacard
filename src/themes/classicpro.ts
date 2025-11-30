@@ -84,8 +84,10 @@ const ClassicPro = async (option: ClassicProOption): Promise<Buffer> => {
                     cropCenter: true,
                 });
 
+                ctx.filter = "blur(10px)";
                 ctx.drawImage(await loadImage(image), 0, 0);
                 ctx.drawImage(await loadImage(darknessSvg), 0, 0);
+                ctx.filter = "none";
             } catch (_error) {
                 const backgroundSvg = generateSvg(`<svg width="1252" height="708" viewBox="0 0 1252 708" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect width="1252" height="708" rx="50" fill="${option.backgroundColor}"/>

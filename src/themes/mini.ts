@@ -57,39 +57,48 @@ const Mini = async (option: MiniOption): Promise<Buffer> => {
         const ctx = canvas.getContext("2d");
 
         if (option.backgroundImage) {
-            try {
-                const darknessSvg = generateSvg(`<svg width="618" height="837" viewBox="0 0 618 837" fill="none" xmlns="http://www.w3.org/2000/svg">
+    try {
+        const darknessSvg = generateSvg(`
+        <svg width="618" height="837" viewBox="0 0 618 837" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect width="618" height="837" rx="50" fill="#070707" fill-opacity="${option.imageDarkness / 100}"/>
-            </svg>`);
+        </svg>`);
 
-                const image = await cropImage({
-                    imagePath: option.backgroundImage,
-                    width: 613,
-                    height: 837,
-                    borderRadius: 50,
-                    cropCenter: true,
-                });
+        const image = await cropImage({
+            imagePath: option.backgroundImage,
+            width: 613,
+            height: 837,
+            borderRadius: 50,
+            cropCenter: true,
+        });
 
-                ctx.drawImage(await loadImage(image), 0, 0);
-                ctx.drawImage(await loadImage(darknessSvg), 0, 0);
-            } catch (_error) {
-                const backgroundSvg = generateSvg(`<svg width="613" height="837" viewBox="0 0 613 837" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect width="613" height="837" rx="50" fill="${option.backgroundColor}" />
-                </svg>`);
 
-                const background = await loadImage(backgroundSvg);
+        ctx.filter = "blur(10px)";
+        ctx.drawImage(await loadImage(image), 0, 0);
+        ctx.filter = "none";
 
-                ctx.drawImage(background, 0, 0);
-            }
-        } else {
-            const backgroundSvg = generateSvg(`<svg width="613" height="837" viewBox="0 0 613 837" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+        ctx.drawImage(await loadImage(darknessSvg), 0, 0);
+
+    } catch (_error) {
+        const backgroundSvg = generateSvg(`
+        <svg width="613" height="837" viewBox="0 0 613 837" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect width="613" height="837" rx="50" fill="${option.backgroundColor}" />
-            </svg>`);
+        </svg>`);
 
-            const background = await loadImage(backgroundSvg);
+        const background = await loadImage(backgroundSvg);
 
-            ctx.drawImage(background, 0, 0);
-        }
+        ctx.drawImage(background, 0, 0);
+    }
+} else {
+    const backgroundSvg = generateSvg(`
+    <svg width="613" height="837" viewBox="0 0 613 837" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="613" height="837" rx="50" fill="${option.backgroundColor}" />
+    </svg>`);
+
+    const background = await loadImage(backgroundSvg);
+
+    ctx.drawImage(background, 0, 0);
+}
 
         ctx.drawImage(thumbnail, 34, 29);
 

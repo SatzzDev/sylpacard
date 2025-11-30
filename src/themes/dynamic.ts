@@ -69,44 +69,60 @@ const Dynamic = async (option: DynamicOption): Promise<Buffer> => {
 
         if (option.backgroundImage) {
             try {
-                const darknessSvg = generateSvg(`<svg width="2367" height="520" viewBox="0 0 2367 520" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0 0H2367V520H0V0Z" fill="#070707" fill-opacity="${option.imageDarkness / 100}"/>
-                </svg>`);
+                const bgImage = await loadImage(option.backgroundImage);
 
-                const image = await cropImage({
-                    imagePath: option.backgroundImage,
-                    width: 2367,
-                    height: 520,
-                    borderRadius: 270,
-                    cropCenter: true,
-                });
+                const canvasWidth = 2367;
+                const canvasHeight = 520;
+                const imgWidth = bgImage.width;
+                const imgHeight = bgImage.height;
+                const canvasRatio = canvasWidth / canvasHeight;
+                const imgRatio = imgWidth / imgHeight;
 
-                const darkImage = await cropImage({
-                    imagePath: darknessSvg,
-                    width: 2367,
-                    height: 520,
-                    borderRadius: 270,
-                    cropCenter: true,
-                });
+                let drawWidth, drawHeight, offsetX, offsetY;
 
-                ctx.drawImage(await loadImage(image), 0, 0);
-                ctx.drawImage(await loadImage(darkImage), 0, 0);
+                if (imgRatio > canvasRatio) {
+                    drawHeight = canvasHeight;
+                    drawWidth = imgWidth * (canvasHeight / imgHeight);
+                    offsetX = (canvasWidth - drawWidth) / 2;
+                    offsetY = 0;
+                } else {
+                    drawWidth = canvasWidth;
+                    drawHeight = imgHeight * (canvasWidth / imgWidth);
+                    offsetX = 0;
+                    offsetY = (canvasHeight - drawHeight) / 2;
+                }
+
+                ctx.save();
+
+                // Rounded corners clip (radius 260 untuk match SVG path)
+                ctx.beginPath();
+                ctx.roundRect(0, 0, canvasWidth, canvasHeight, 260);
+                ctx.clip();
+
+                // Apply blur and draw background
+                ctx.filter = 'blur(15px)';
+                ctx.drawImage(bgImage, offsetX, offsetY, drawWidth, drawHeight);
+                ctx.filter = 'none';
+
+                // Darkness overlay
+                ctx.fillStyle = `rgba(7, 7, 7, ${option.imageDarkness / 100})`;
+                ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+
+                ctx.restore();
             } catch (_error) {
                 const backgroundSvg = generateSvg(`<svg width="2367" height="520" viewBox="0 0 2367 520" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0 260C0 116.406 116.406 0 260 0H2107C2250.59 0 2367 116.406 2367 260V260C2367 403.594 2250.59 520 2107 520H260C116.406 520 0 403.594 0 260V260Z" fill="${option.backgroundColor}"/>
-                </svg>`);
+        <path d="M0 260C0 116.406 116.406 0 260 0H2107C2250.59 0 2367 116.406 2367 260V260C2367 403.594 2250.59 520 2107 520H260C116.406 520 0 403.594 0 260V260Z" fill="${option.backgroundColor}"/>
+        </svg>`);
 
                 const background = await loadImage(backgroundSvg);
-
                 ctx.drawImage(background, 0, 0);
             }
         } else {
             const backgroundSvg = generateSvg(`<svg width="2367" height="520" viewBox="0 0 2367 520" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0 260C0 116.406 116.406 0 260 0H2107C2250.59 0 2367 116.406 2367 260V260C2367 403.594 2250.59 520 2107 520H260C116.406 520 0 403.594 0 260V260Z" fill="${option.backgroundColor}"/>
-            </svg>`);
+    <path d="M0 260C0 116.406 116.406 0 260 0H2107C2250.59 0 2367 116.406 2367 260V260C2367 403.594 2250.59 520 2107 520H260C116.406 520 0 403.594 0 260V260Z" fill="${option.backgroundColor}"/>
+    </svg>`);
 
             const background = await loadImage(backgroundSvg);
-
             ctx.drawImage(background, 0, 0);
         }
 

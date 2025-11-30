@@ -101,10 +101,6 @@ var Classic = async (option) => {
     const ctx = canvas.getContext("2d");
     if (option.backgroundImage) {
       try {
-        const darknessSvg = generateSvg(`<svg width="1568" height="837" viewBox="0 0 1568 837" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect width="1568" height="512" rx="50" fill="#070707" fill-opacity="${option.imageDarkness / 100}"/>
-                <rect y="565" width="1568" height="272" rx="50" fill="#070707" fill-opacity="${option.imageDarkness / 100}"/>
-                </svg>`);
         const image = await cropImage({
           imagePath: option.backgroundImage,
           width: 1568,
@@ -120,7 +116,10 @@ var Classic = async (option) => {
           height: 512,
           borderRadius: 50
         }).then(async (x) => {
-          ctx.drawImage(await loadImage(x), 0, 0);
+          const img = await loadImage(x);
+          ctx.filter = "blur(20px)";
+          ctx.drawImage(img, 0, 0);
+          ctx.filter = "none";
         });
         await cropImage({
           // @ts-ignore
@@ -131,8 +130,15 @@ var Classic = async (option) => {
           height: 272,
           borderRadius: 50
         }).then(async (x) => {
-          ctx.drawImage(await loadImage(x), 0, 565);
+          const img = await loadImage(x);
+          ctx.filter = "blur(20px)";
+          ctx.drawImage(img, 0, 565);
+          ctx.filter = "none";
         });
+        const darknessSvg = generateSvg(`<svg width="1568" height="837" viewBox="0 0 1568 837" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="1568" height="512" rx="50" fill="#070707" fill-opacity="${option.imageDarkness / 100}"/>
+                <rect y="565" width="1568" height="272" rx="50" fill="#070707" fill-opacity="${option.imageDarkness / 100}"/>
+                </svg>`);
         ctx.drawImage(await loadImage(darknessSvg), 0, 0);
       } catch (_err) {
         const backgroundSvg = generateSvg(`<svg width="2458" height="837" viewBox="0 0 2458 837" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -246,8 +252,10 @@ var ClassicPro = async (option) => {
           borderRadius: 50,
           cropCenter: true
         });
+        ctx.filter = "blur(10px)";
         ctx.drawImage(await loadImage2(image), 0, 0);
         ctx.drawImage(await loadImage2(darknessSvg), 0, 0);
+        ctx.filter = "none";
       } catch (_error) {
         const backgroundSvg = generateSvg(`<svg width="1252" height="708" viewBox="0 0 1252 708" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect width="1252" height="708" rx="50" fill="${option.backgroundColor}"/>
@@ -345,36 +353,46 @@ var Dynamic = async (option) => {
     const ctx = canvas.getContext("2d");
     if (option.backgroundImage) {
       try {
-        const darknessSvg = generateSvg(`<svg width="2367" height="520" viewBox="0 0 2367 520" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0 0H2367V520H0V0Z" fill="#070707" fill-opacity="${option.imageDarkness / 100}"/>
-                </svg>`);
-        const image = await cropImage3({
-          imagePath: option.backgroundImage,
-          width: 2367,
-          height: 520,
-          borderRadius: 270,
-          cropCenter: true
-        });
-        const darkImage = await cropImage3({
-          imagePath: darknessSvg,
-          width: 2367,
-          height: 520,
-          borderRadius: 270,
-          cropCenter: true
-        });
-        ctx.drawImage(await loadImage3(image), 0, 0);
-        ctx.drawImage(await loadImage3(darkImage), 0, 0);
+        const bgImage = await loadImage3(option.backgroundImage);
+        const canvasWidth = 2367;
+        const canvasHeight = 520;
+        const imgWidth = bgImage.width;
+        const imgHeight = bgImage.height;
+        const canvasRatio = canvasWidth / canvasHeight;
+        const imgRatio = imgWidth / imgHeight;
+        let drawWidth, drawHeight, offsetX, offsetY;
+        if (imgRatio > canvasRatio) {
+          drawHeight = canvasHeight;
+          drawWidth = imgWidth * (canvasHeight / imgHeight);
+          offsetX = (canvasWidth - drawWidth) / 2;
+          offsetY = 0;
+        } else {
+          drawWidth = canvasWidth;
+          drawHeight = imgHeight * (canvasWidth / imgWidth);
+          offsetX = 0;
+          offsetY = (canvasHeight - drawHeight) / 2;
+        }
+        ctx.save();
+        ctx.beginPath();
+        ctx.roundRect(0, 0, canvasWidth, canvasHeight, 260);
+        ctx.clip();
+        ctx.filter = "blur(15px)";
+        ctx.drawImage(bgImage, offsetX, offsetY, drawWidth, drawHeight);
+        ctx.filter = "none";
+        ctx.fillStyle = `rgba(7, 7, 7, ${option.imageDarkness / 100})`;
+        ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+        ctx.restore();
       } catch (_error) {
         const backgroundSvg = generateSvg(`<svg width="2367" height="520" viewBox="0 0 2367 520" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0 260C0 116.406 116.406 0 260 0H2107C2250.59 0 2367 116.406 2367 260V260C2367 403.594 2250.59 520 2107 520H260C116.406 520 0 403.594 0 260V260Z" fill="${option.backgroundColor}"/>
-                </svg>`);
+        <path d="M0 260C0 116.406 116.406 0 260 0H2107C2250.59 0 2367 116.406 2367 260V260C2367 403.594 2250.59 520 2107 520H260C116.406 520 0 403.594 0 260V260Z" fill="${option.backgroundColor}"/>
+        </svg>`);
         const background = await loadImage3(backgroundSvg);
         ctx.drawImage(background, 0, 0);
       }
     } else {
       const backgroundSvg = generateSvg(`<svg width="2367" height="520" viewBox="0 0 2367 520" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0 260C0 116.406 116.406 0 260 0H2107C2250.59 0 2367 116.406 2367 260V260C2367 403.594 2250.59 520 2107 520H260C116.406 520 0 403.594 0 260V260Z" fill="${option.backgroundColor}"/>
-            </svg>`);
+    <path d="M0 260C0 116.406 116.406 0 260 0H2107C2250.59 0 2367 116.406 2367 260V260C2367 403.594 2250.59 520 2107 520H260C116.406 520 0 403.594 0 260V260Z" fill="${option.backgroundColor}"/>
+    </svg>`);
       const background = await loadImage3(backgroundSvg);
       ctx.drawImage(background, 0, 0);
     }
@@ -450,9 +468,10 @@ var Mini = async (option) => {
     const ctx = canvas.getContext("2d");
     if (option.backgroundImage) {
       try {
-        const darknessSvg = generateSvg(`<svg width="618" height="837" viewBox="0 0 618 837" fill="none" xmlns="http://www.w3.org/2000/svg">
+        const darknessSvg = generateSvg(`
+        <svg width="618" height="837" viewBox="0 0 618 837" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect width="618" height="837" rx="50" fill="#070707" fill-opacity="${option.imageDarkness / 100}"/>
-            </svg>`);
+        </svg>`);
         const image = await cropImage4({
           imagePath: option.backgroundImage,
           width: 613,
@@ -460,19 +479,23 @@ var Mini = async (option) => {
           borderRadius: 50,
           cropCenter: true
         });
+        ctx.filter = "blur(10px)";
         ctx.drawImage(await loadImage4(image), 0, 0);
+        ctx.filter = "none";
         ctx.drawImage(await loadImage4(darknessSvg), 0, 0);
       } catch (_error) {
-        const backgroundSvg = generateSvg(`<svg width="613" height="837" viewBox="0 0 613 837" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect width="613" height="837" rx="50" fill="${option.backgroundColor}" />
-                </svg>`);
+        const backgroundSvg = generateSvg(`
+        <svg width="613" height="837" viewBox="0 0 613 837" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="613" height="837" rx="50" fill="${option.backgroundColor}" />
+        </svg>`);
         const background = await loadImage4(backgroundSvg);
         ctx.drawImage(background, 0, 0);
       }
     } else {
-      const backgroundSvg = generateSvg(`<svg width="613" height="837" viewBox="0 0 613 837" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="613" height="837" rx="50" fill="${option.backgroundColor}" />
-            </svg>`);
+      const backgroundSvg = generateSvg(`
+    <svg width="613" height="837" viewBox="0 0 613 837" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="613" height="837" rx="50" fill="${option.backgroundColor}" />
+    </svg>`);
       const background = await loadImage4(backgroundSvg);
       ctx.drawImage(background, 0, 0);
     }
@@ -625,6 +648,7 @@ registerFont("PlusJakartaSans-Light.ttf", "light");
 registerFont("PlusJakartaSans-Medium.ttf", "medium");
 registerFont("PlusJakartaSans-Regular.ttf", "regular");
 registerFont("PlusJakartaSans-SemiBold.ttf", "semibold");
+registerFont("Blacklisted.ttf", "badge");
 var QueueList = async (options) => {
   if (!options.title) options.title = "Queue List";
   if (!options.titleColor) options.titleColor = "#FFFFFF";
@@ -634,44 +658,81 @@ var QueueList = async (options) => {
     <rect width="613" height="837" rx="50" fill="${options.backgroundColor}" />
     </svg>`);
   try {
-    const canvas = createCanvas6(690, 400);
+    const canvas = createCanvas6(690, 700);
     const ctx = canvas.getContext("2d");
     if (options.backgroundImage) {
       try {
-        const darknessSvg = generateSvg(`<svg width="690" height="400" viewBox="0 0 690 400" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect width="690" height="400" rx="30" fill="#070707" fill-opacity="${options.imageDarkness / 100}"/>
+        const darknessSvg = generateSvg(`<svg width="690" height="700" viewBox="0 0 690 700" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="690" height="700" rx="100" fill="#070707" fill-opacity="${options.imageDarkness / 100}"/>
                 </svg>`);
         const image = await cropImage6({
           //@ts-ignore
           imagePath: options.backgroundImage,
           width: 690,
-          height: 400,
-          borderRadius: 35,
+          height: 700,
+          borderRadius: 50,
           cropCenter: true
         });
         ctx.drawImage(await loadImage6(image), 0, 0);
         ctx.drawImage(await loadImage6(darknessSvg), 0, 0);
       } catch (_error) {
-        const backgroundSvg = generateSvg(`<svg width="690" height="400" viewBox="0 0 690 400" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect width="690" height="400" rx="35" fill="${options.backgroundColor}"/>
+        const backgroundSvg = generateSvg(`<svg width="690" height="700" viewBox="0 0 690 700" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="690" height="700" rx="100" fill="${options.backgroundColor}"/>
                 </svg>`);
         const backgroundColor = await loadImage6(backgroundSvg);
         ctx.drawImage(backgroundColor, 0, 0);
       }
     } else {
-      const backgroundSvg = generateSvg(`<svg width="690" height="400" viewBox="0 0 690 400" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="690" height="400" rx="35" fill="${options.backgroundColor}"/>
+      const backgroundSvg = generateSvg(`<svg width="690" height="700" viewBox="0 0 690 700" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="690" height="700" rx="100" fill="${options.backgroundColor}"/>
             </svg>`);
       const backgroundColor = await loadImage6(backgroundSvg);
       ctx.drawImage(backgroundColor, 0, 0);
     }
-    ctx.font = "30px extrabold";
+    ctx.font = "25px badge";
+    const badgeText = options.title;
+    const padX = 12;
+    const padY = 8;
+    const textWidth = ctx.measureText(badgeText).width;
+    const textHeight = 30;
+    const badgeX = 20;
+    const badgeY = 25;
+    const badgeW = textWidth + padX * 2;
+    const badgeH = textHeight + padY * 2;
+    ctx.shadowColor = "rgba(0,0,0,0.3)";
+    ctx.shadowBlur = 8;
+    ctx.shadowOffsetX = 2;
+    ctx.shadowOffsetY = 2;
+    ctx.fillStyle = "#5865F2";
+    ctx.beginPath();
+    ctx.moveTo(badgeX + 12, badgeY);
+    ctx.lineTo(badgeX + badgeW - 12, badgeY);
+    ctx.quadraticCurveTo(badgeX + badgeW, badgeY, badgeX + badgeW, badgeY + 12);
+    ctx.lineTo(badgeX + badgeW, badgeY + badgeH - 12);
+    ctx.quadraticCurveTo(badgeX + badgeW, badgeY + badgeH, badgeX + badgeW - 12, badgeY + badgeH);
+    ctx.lineTo(badgeX + 12, badgeY + badgeH);
+    ctx.quadraticCurveTo(badgeX, badgeY + badgeH, badgeX, badgeY + badgeH - 12);
+    ctx.lineTo(badgeX, badgeY + 12);
+    ctx.quadraticCurveTo(badgeX, badgeY, badgeX + 12, badgeY);
+    ctx.closePath();
+    ctx.fill();
+    ctx.shadowColor = "transparent";
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = "#FFFFFF";
+    ctx.lineJoin = "round";
+    ctx.stroke();
+    ctx.shadowColor = "transparent";
+    ctx.shadowBlur = 0;
     ctx.fillStyle = options.titleColor;
-    ctx.fillText(options.title, 20, 50);
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(badgeText, badgeX + badgeW / 2, 52);
+    ctx.textAlign = "start";
+    ctx.textBaseline = "alphabetic";
     const tracksToShow = options.tracks.slice(0, 10);
     for (let i = 0; i < tracksToShow.length; i++) {
       const track = tracksToShow[i];
-      const y = 80 + i * 60;
+      const y = 90 + i * 60;
       let thumbnail;
       try {
         thumbnail = await loadImage6(
@@ -679,32 +740,46 @@ var QueueList = async (options) => {
             //@ts-ignore
             imagePath: track.thumbnailImage || noImageSvg,
             borderRadius: 10,
-            width: 40,
-            height: 40,
+            width: 48,
+            height: 48,
             cropCenter: true
           })
         );
-      } catch (_e) {
+      } catch {
         thumbnail = await loadImage6(
           await cropImage6({
             imagePath: noImageSvg,
             borderRadius: 10,
-            width: 40,
-            height: 40,
+            width: 48,
+            height: 48,
             cropCenter: true
           })
         );
       }
       ctx.drawImage(thumbnail, 20, y);
-      ctx.font = "18px bold";
+      ctx.font = "18px semibold";
       ctx.fillStyle = "#FFFFFF";
-      ctx.fillText(track.title.length > 25 ? `${track.title.slice(0, 25)}...` : track.title, 80, y + 15);
-      ctx.font = "14px medium";
+      ctx.fillText(
+        track.title.length > 28 ? track.title.slice(0, 28) + "\u2026" : track.title,
+        80,
+        y + 20
+      );
+      ctx.font = "14px regular";
       ctx.fillStyle = "#CCCCCC";
-      ctx.fillText(track.author.length > 20 ? `${track.author.slice(0, 20)}...` : track.author, 80, y + 35);
-      ctx.fillStyle = "#FF7A00";
+      ctx.fillText(
+        track.author.length > 22 ? track.author.slice(0, 22) + "\u2026" : track.author,
+        80,
+        y + 40
+      );
+      ctx.fillStyle = "#5865F2";
       ctx.font = "16px bold";
-      ctx.fillText(`${i + 1}`, canvas.width - 40, y + 25);
+      ctx.fillText(`${i + 1}`, canvas.width - 40, y + 28);
+      ctx.beginPath();
+      ctx.moveTo(20, y + 55);
+      ctx.lineTo(canvas.width - 20, y + 55);
+      ctx.strokeStyle = "rgba(255,255,255,0.15)";
+      ctx.lineWidth = 1;
+      ctx.stroke();
     }
     return canvas.toBuffer("image/png");
   } catch (error) {
@@ -712,7 +787,7 @@ var QueueList = async (options) => {
   }
 };
 
-// src/themes/mostplayed.ts
+// src/themes/addedtoqueue.ts
 import { createCanvas as createCanvas7, loadImage as loadImage7 } from "@napi-rs/canvas";
 import { cropImage as cropImage7 } from "cropify";
 registerFont("PlusJakartaSans-Bold.ttf", "bold");
@@ -722,12 +797,17 @@ registerFont("PlusJakartaSans-Light.ttf", "light");
 registerFont("PlusJakartaSans-Medium.ttf", "medium");
 registerFont("PlusJakartaSans-Regular.ttf", "regular");
 registerFont("PlusJakartaSans-SemiBold.ttf", "semibold");
-var MostPlayed = async (options) => {
+registerFont("Blacklisted.ttf", "badge");
+var AddedToQueue = async (options) => {
   if (!options.titleColor) options.titleColor = "#FFFFFF";
   if (!options.authorColor) options.authorColor = "#FFFFFF";
-  if (!options.playCountColor) options.playCountColor = "#FF7A00";
+  if (!options.message) options.message = "Added to Queue";
+  if (!options.messageColor) options.messageColor = "#5865F2";
   if (!options.backgroundColor) options.backgroundColor = "#070707";
   if (!options.imageDarkness) options.imageDarkness = 10;
+  if (!options.badgeBg) options.badgeBg = "#5865F2";
+  if (!options.badgeBorder) options.badgeBorder = "#fff";
+  if (!options.badgeText) options.badgeText = "#fff";
   const noImageSvg = generateSvg(`<svg width="613" height="837" viewBox="0 0 613 837" fill="none" xmlns="http://www.w3.org/2000/svg">
     <rect width="613" height="837" rx="50" fill="${options.backgroundColor}" />
     </svg>`);
@@ -738,8 +818,8 @@ var MostPlayed = async (options) => {
         //@ts-ignore
         imagePath: options.thumbnailImage || noImageSvg,
         borderRadius: 20,
-        width: 150,
-        height: 150,
+        width: 100,
+        height: 100,
         cropCenter: true
       })
     );
@@ -748,8 +828,8 @@ var MostPlayed = async (options) => {
       await cropImage7({
         imagePath: noImageSvg,
         borderRadius: 20,
-        width: 150,
-        height: 150,
+        width: 100,
+        height: 100,
         cropCenter: true
       })
     );
@@ -766,54 +846,95 @@ var MostPlayed = async (options) => {
     options.author = `${options.author.slice(0, 19)}...`;
   }
   try {
-    const canvas = createCanvas7(690, 194);
+    const canvas = createCanvas7(500, 150);
     const ctx = canvas.getContext("2d");
     if (options.backgroundImage) {
       try {
-        const darknessSvg = generateSvg(`<svg width="690" height="194" viewBox="0 0 690 194" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect width="690" height="194" rx="30" fill="#070707" fill-opacity="${options.imageDarkness / 100}"/>
-                </svg>`);
-        const image = await cropImage7({
-          //@ts-ignore
-          imagePath: options.backgroundImage,
-          width: 690,
-          height: 194,
-          borderRadius: 35,
-          cropCenter: true
-        });
-        ctx.drawImage(await loadImage7(image), 0, 0);
-        ctx.drawImage(await loadImage7(darknessSvg), 0, 0);
+        const bgImage = await loadImage7(options.backgroundImage);
+        const canvasWidth = 500;
+        const canvasHeight = 150;
+        const imgWidth = bgImage.width;
+        const imgHeight = bgImage.height;
+        const canvasRatio = canvasWidth / canvasHeight;
+        const imgRatio = imgWidth / imgHeight;
+        let drawWidth, drawHeight, offsetX, offsetY;
+        if (imgRatio > canvasRatio) {
+          drawHeight = canvasHeight;
+          drawWidth = imgWidth * (canvasHeight / imgHeight);
+          offsetX = (canvasWidth - drawWidth) / 2;
+          offsetY = 0;
+        } else {
+          drawWidth = canvasWidth;
+          drawHeight = imgHeight * (canvasWidth / imgWidth);
+          offsetX = 0;
+          offsetY = (canvasHeight - drawHeight) / 2;
+        }
+        ctx.save();
+        ctx.beginPath();
+        ctx.roundRect(0, 0, canvasWidth, canvasHeight, 25);
+        ctx.clip();
+        ctx.filter = "blur(10px)";
+        ctx.drawImage(bgImage, offsetX, offsetY, drawWidth, drawHeight);
+        ctx.filter = "none";
+        ctx.fillStyle = `rgba(7, 7, 7, ${options.imageDarkness / 100})`;
+        ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+        ctx.restore();
       } catch (_error) {
-        const backgroundSvg = generateSvg(`<svg width="690" height="194" viewBox="0 0 690 194" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect width="690" height="194" rx="35" fill="${options.backgroundColor}"/>
-                </svg>`);
+        const backgroundSvg = generateSvg(`<svg width="500" height="150" viewBox="0 0 500 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="500" height="150" rx="25" fill="${options.backgroundColor}"/>
+        </svg>`);
         const backgroundColor = await loadImage7(backgroundSvg);
         ctx.drawImage(backgroundColor, 0, 0);
       }
     } else {
-      const backgroundSvg = generateSvg(`<svg width="690" height="194" viewBox="0 0 690 194" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="690" height="194" rx="35" fill="${options.backgroundColor}"/>
-            </svg>`);
+      const backgroundSvg = generateSvg(`<svg width="500" height="150" viewBox="0 0 500 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="500" height="150" rx="25" fill="${options.backgroundColor}"/>
+    </svg>`);
       const backgroundColor = await loadImage7(backgroundSvg);
       ctx.drawImage(backgroundColor, 0, 0);
     }
-    ctx.drawImage(thumbnail, 22, 22);
-    ctx.font = "33px extrabold";
+    ctx.drawImage(thumbnail, 20, 15);
+    ctx.font = "22px extrabold";
     ctx.fillStyle = options.titleColor;
-    ctx.fillText(options.title, 200, canvas.height / 2);
-    ctx.font = "23px medium";
+    ctx.fillText(options.title, 150, 55);
+    ctx.font = "17px medium";
     ctx.fillStyle = options.authorColor;
-    ctx.fillText(options.author, 200, canvas.height / 2 + 35);
-    ctx.fillStyle = options.playCountColor;
-    ctx.font = "25px bold";
-    ctx.fillText(`Plays: ${options.playCount}`, canvas.width - 200, canvas.height - 30);
+    ctx.fillText(options.author, 150, 85);
+    ctx.font = "15px badge";
+    const badgeText = options.message;
+    const padX = 10;
+    const padY = 6;
+    const textWidth = ctx.measureText(badgeText).width;
+    const textHeight = 20;
+    const badgeX = canvas.width - textWidth - padX * 2 - 25;
+    const badgeY = 20;
+    const badgeW = textWidth + padX * 2;
+    const badgeH = textHeight + padY * 2;
+    ctx.beginPath();
+    ctx.moveTo(badgeX + 10, badgeY);
+    ctx.lineTo(badgeX + badgeW - 10, badgeY);
+    ctx.quadraticCurveTo(badgeX + badgeW, badgeY, badgeX + badgeW, badgeY + 10);
+    ctx.lineTo(badgeX + badgeW, badgeY + badgeH - 10);
+    ctx.quadraticCurveTo(badgeX + badgeW, badgeY + badgeH, badgeX + badgeW - 10, badgeY + badgeH);
+    ctx.lineTo(badgeX + 10, badgeY + badgeH);
+    ctx.quadraticCurveTo(badgeX, badgeY + badgeH, badgeX, badgeY + badgeH - 10);
+    ctx.lineTo(badgeX, badgeY + 10);
+    ctx.quadraticCurveTo(badgeX, badgeY, badgeX + 10, badgeY);
+    ctx.closePath();
+    ctx.fillStyle = options.badgeBg;
+    ctx.fill();
+    ctx.strokeStyle = options.badgeBorder;
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+    ctx.fillStyle = options.badgeText;
+    ctx.fillText(badgeText, badgeX + padX, badgeY + badgeH - padY - 2);
     return canvas.toBuffer("image/png");
   } catch (error) {
     throw new Error(error.message);
   }
 };
 
-// src/themes/addedtoqueue.ts
+// src/themes/lyrics.ts
 import { createCanvas as createCanvas8, loadImage as loadImage8 } from "@napi-rs/canvas";
 import { cropImage as cropImage8 } from "cropify";
 registerFont("PlusJakartaSans-Bold.ttf", "bold");
@@ -823,15 +944,17 @@ registerFont("PlusJakartaSans-Light.ttf", "light");
 registerFont("PlusJakartaSans-Medium.ttf", "medium");
 registerFont("PlusJakartaSans-Regular.ttf", "regular");
 registerFont("PlusJakartaSans-SemiBold.ttf", "semibold");
-var AddedToQueue = async (options) => {
+registerFont("DmSans-Medium.ttf", "lyrics");
+var Lyrics = async (options) => {
   if (!options.titleColor) options.titleColor = "#FFFFFF";
   if (!options.authorColor) options.authorColor = "#FFFFFF";
-  if (!options.message) options.message = "Added to Queue";
-  if (!options.messageColor) options.messageColor = "#00FF00";
+  if (!options.lyricsColor) options.lyricsColor = "#FFFFFF";
   if (!options.backgroundColor) options.backgroundColor = "#070707";
   if (!options.imageDarkness) options.imageDarkness = 10;
-  const noImageSvg = generateSvg(`<svg width="613" height="837" viewBox="0 0 613 837" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <rect width="613" height="837" rx="50" fill="${options.backgroundColor}" />
+  const canvasWidth = 720;
+  const canvasHeight = 1280;
+  const noImageSvg = generateSvg(`<svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="100" height="100" rx="20" fill="${options.backgroundColor}" />
     </svg>`);
   let thumbnail;
   try {
@@ -839,7 +962,7 @@ var AddedToQueue = async (options) => {
       await cropImage8({
         //@ts-ignore
         imagePath: options.thumbnailImage || noImageSvg,
-        borderRadius: 20,
+        borderRadius: 14,
         width: 100,
         height: 100,
         cropCenter: true
@@ -849,66 +972,112 @@ var AddedToQueue = async (options) => {
     thumbnail = await loadImage8(
       await cropImage8({
         imagePath: noImageSvg,
-        borderRadius: 20,
+        borderRadius: 14,
         width: 100,
         height: 100,
         cropCenter: true
       })
     );
   }
-  if (options.imageDarkness < 0) {
-    options.imageDarkness = 0;
-  } else if (options.imageDarkness > 100) {
-    options.imageDarkness = 100;
-  }
-  if (options.title.length > 18) {
-    options.title = `${options.title.slice(0, 18)}...`;
-  }
-  if (options.author.length > 19) {
-    options.author = `${options.author.slice(0, 19)}...`;
-  }
+  if (options.imageDarkness < 0) options.imageDarkness = 0;
+  else if (options.imageDarkness > 100) options.imageDarkness = 100;
+  const maxTitleWidth = canvasWidth - 200;
+  const maxAuthorWidth = canvasWidth - 200;
   try {
-    const canvas = createCanvas8(500, 150);
+    const canvas = createCanvas8(canvasWidth, canvasHeight);
     const ctx = canvas.getContext("2d");
     if (options.backgroundImage) {
       try {
-        const darknessSvg = generateSvg(`<svg width="500" height="150" viewBox="0 0 500 150" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect width="500" height="150" rx="20" fill="#070707" fill-opacity="${options.imageDarkness / 100}"/>
-                </svg>`);
-        const image = await cropImage8({
-          //@ts-ignore
-          imagePath: options.backgroundImage,
-          width: 500,
-          height: 150,
-          borderRadius: 25,
-          cropCenter: true
-        });
-        ctx.drawImage(await loadImage8(image), 0, 0);
-        ctx.drawImage(await loadImage8(darknessSvg), 0, 0);
+        const bgImage = await loadImage8(options.backgroundImage);
+        const imgWidth = bgImage.width;
+        const imgHeight = bgImage.height;
+        const canvasRatio = canvasWidth / canvasHeight;
+        const imgRatio = imgWidth / imgHeight;
+        let drawWidth, drawHeight, offsetX, offsetY;
+        if (imgRatio > canvasRatio) {
+          drawHeight = canvasHeight;
+          drawWidth = imgWidth * (canvasHeight / imgHeight);
+          offsetX = (canvasWidth - drawWidth) / 2;
+          offsetY = 0;
+        } else {
+          drawWidth = canvasWidth;
+          drawHeight = imgHeight * (canvasWidth / imgWidth);
+          offsetX = 0;
+          offsetY = (canvasHeight - drawHeight) / 2;
+        }
+        ctx.beginPath();
+        ctx.roundRect(0, 0, canvasWidth, canvasHeight, 50);
+        ctx.clip();
+        ctx.filter = "blur(10px)";
+        ctx.drawImage(bgImage, offsetX, offsetY, drawWidth, drawHeight);
+        ctx.filter = "none";
+        ctx.fillStyle = `rgba(7, 7, 7, ${options.imageDarkness / 100})`;
+        ctx.fillRect(0, 0, canvasWidth, canvasHeight);
       } catch (_error) {
-        const backgroundSvg = generateSvg(`<svg width="500" height="150" viewBox="0 0 500 150" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect width="500" height="150" rx="25" fill="${options.backgroundColor}"/>
-                </svg>`);
-        const backgroundColor = await loadImage8(backgroundSvg);
-        ctx.drawImage(backgroundColor, 0, 0);
+        ctx.fillStyle = options.backgroundColor;
+        ctx.fillRect(0, 0, canvasWidth, canvasHeight);
       }
     } else {
-      const backgroundSvg = generateSvg(`<svg width="500" height="150" viewBox="0 0 500 150" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="500" height="150" rx="25" fill="${options.backgroundColor}"/>
-            </svg>`);
-      const backgroundColor = await loadImage8(backgroundSvg);
-      ctx.drawImage(backgroundColor, 0, 0);
+      ctx.fillStyle = options.backgroundColor;
+      ctx.fillRect(0, 0, canvasWidth, canvasHeight);
     }
-    ctx.drawImage(thumbnail, 20, 25);
-    ctx.font = "20px extrabold";
+    ctx.drawImage(thumbnail, 50, 50);
+    ctx.font = "30px extrabold";
     ctx.fillStyle = options.titleColor;
-    ctx.fillText(options.title, 140, canvas.height / 2 - 10);
-    ctx.font = "16px medium";
+    let title = options.title;
+    let titleWidth = ctx.measureText(title).width;
+    while (titleWidth > maxTitleWidth && title.length > 3) {
+      title = title.slice(0, -4) + "...";
+      titleWidth = ctx.measureText(title).width;
+    }
+    ctx.fillText(title, 180, 90);
+    ctx.font = "20px medium";
     ctx.fillStyle = options.authorColor;
-    ctx.fillText(options.author, 140, canvas.height / 2 + 15);
-    ctx.fillStyle = options.messageColor;
-    ctx.font = "18px bold";
-    ctx.fillText(options.message, canvas.width - 150, canvas.height - 20);
+    let author = options.author;
+    let authorWidth = ctx.measureText(author).width;
+    while (authorWidth > maxAuthorWidth && author.length > 3) {
+      author = author.slice(0, -4) + "...";
+      authorWidth = ctx.measureText(author).width;
+    }
+    ctx.fillText(author, 180, 120);
+    ctx.fillStyle = options.lyricsColor;
+    ctx.font = "18px lyrics";
+    const lyricsLines = options.lyrics.split("\n");
+    const maxLyricsWidth = canvasWidth - 100;
+    const lineHeight = 30;
+    const startY = 200;
+    const maxLines = Math.floor((canvasHeight - startY - 50) / lineHeight);
+    let currentY = startY;
+    let lineCount = 0;
+    for (let i = 0; i < lyricsLines.length && lineCount < maxLines; i++) {
+      let line = lyricsLines[i].trim();
+      if (line === "") {
+        currentY += lineHeight;
+        lineCount++;
+        continue;
+      }
+      let words = line.split(" ");
+      let currentLine = "";
+      for (let word of words) {
+        let testLine = currentLine + (currentLine ? " " : "") + word;
+        let testWidth = ctx.measureText(testLine).width;
+        if (testWidth > maxLyricsWidth && currentLine) {
+          ctx.fillText(currentLine, 50, currentY);
+          currentY += lineHeight;
+          lineCount++;
+          currentLine = word;
+          if (lineCount >= maxLines) break;
+        } else {
+          currentLine = testLine;
+        }
+      }
+      if (currentLine && lineCount < maxLines) {
+        ctx.fillText(currentLine, 50, currentY);
+        currentY += lineHeight;
+        lineCount++;
+      }
+      if (lineCount >= maxLines) break;
+    }
     return canvas.toBuffer("image/png");
   } catch (error) {
     throw new Error(error.message);
@@ -919,8 +1088,8 @@ export {
   Classic,
   ClassicPro,
   Dynamic,
+  Lyrics,
   Mini,
-  MostPlayed,
   QueueList,
   Upcoming
 };

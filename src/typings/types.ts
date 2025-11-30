@@ -173,62 +173,7 @@ export type QueueListOptions = {
     imageDarkness?: number;
 };
 
-export type MostPlayedOptions = {
-    /**
-     * Title of the most played track
-     */
-    title: string;
 
-    /**
-     * Color For the Track Title
-     * @default #FFFFFF(White)
-     */
-    titleColor?: string;
-
-    /**
-     * Author of the track
-     */
-    author: string;
-
-    /**
-     * Color For the Track's Author
-     * @default #FFFFFF(White)
-     */
-    authorColor?: string;
-
-    /**
-     * Thumbnail of the track
-     */
-    thumbnailImage?: Parameters<typeof loadImage>[0];
-
-    /**
-     * Play count of the track
-     */
-    playCount: number;
-
-    /**
-     * Color for play count text
-     * @default #FF7A00
-     */
-    playCountColor?: string;
-
-    /**
-     * Background Color
-     * @default #070707
-     */
-    backgroundColor?: string;
-
-    /**
-     * Background Image
-     * @optional
-     */
-    backgroundImage?: Parameters<typeof loadImage>[0];
-
-    /**
-     * Darkness for the background Image.
-     */
-    imageDarkness?: number;
-};
 
 export type AddedToQueueOptions = {
     /**
@@ -269,6 +214,78 @@ export type AddedToQueueOptions = {
      * @default #00FF00
      */
     messageColor?: string;
+
+    /**
+     * Background Color
+     * @default #070707
+     */
+    backgroundColor?: string;
+
+    /**
+     * Background Image
+     * @optional
+     */
+    backgroundImage?: Parameters<typeof loadImage>[0];
+
+    /**
+     * Darkness for the background Image.
+     */
+    imageDarkness?: number;
+    /**
+     * Badge Background Color
+     * @default #ffffff33
+     */
+    badgeBg?: string;
+    /**
+     * Badge Border Color
+     * @default #ffffff55
+     * /
+     * Badge Text Color
+     * @default #fff
+     */
+    badgeText?: string;
+    badgeBorder?: string;
+    
+};
+
+export type LyricsOptions = {
+    /**
+     * Title of the track
+     */
+    title: string;
+
+    /**
+     * Color For the Track Title
+     * @default #FFFFFF(White)
+     */
+    titleColor?: string;
+
+    /**
+     * Author of the track
+     */
+    author: string;
+
+    /**
+     * Color For the Track's Author
+     * @default #FFFFFF(White)
+     */
+    authorColor?: string;
+
+    /**
+     * Thumbnail of the track
+     */
+    thumbnailImage?: Parameters<typeof loadImage>[0];
+
+    /**
+     * Lyrics of the track
+     */
+    lyrics: string;
+
+    /**
+     * Color for the lyrics
+     * @default #FFFFFF(White)
+     */
+    lyricsColor?: string;
 
     /**
      * Background Color
