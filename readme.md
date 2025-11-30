@@ -234,6 +234,91 @@ Musicard is the #1 canvas library to create music cards with awesome themes.
 })();
 ```
 
+---
+
+## Queue
+
+![queue](/assets/output-queue.png)
+
+```js
+(async () => {
+    const { QueueList } = require('musicard');
+    const fs = require('fs');
+
+    const musicard = await QueueList({
+        tracks: [
+            {
+                title: 'Burn',
+                author: '2WEI & Edda Hayes',
+                thumbnailImage: 'https://lh3.googleusercontent.com/yavtBZZnoxaY21GSS_VIKSg0mvzu1b0r6arH8xvWVskoMaZ5ww3iDMgBNujnIWCt7MOkDsrKapSGCfc=w544-h544-l90-rj'
+            },
+            {
+                title: 'Another Song',
+                author: 'Artist Name',
+                thumbnailImage: 'https://example.com/image.jpg'
+            }
+        ],
+        title: 'Queue List',
+        titleColor: '#FFFFFF',
+        backgroundColor: '#070707'
+    });
+
+    fs.writeFileSync('musicard.png', musicard);
+})();
+```
+
+---
+
+## Most Played
+
+![mostplayed](/assets/output-mostplayed.png)
+
+```js
+(async () => {
+    const { MostPlayed } = require('musicard');
+    const fs = require('fs');
+
+    const musicard = await MostPlayed({
+        title: 'Burn',
+        author: '2WEI & Edda Hayes',
+        thumbnailImage: 'https://lh3.googleusercontent.com/yavtBZZnoxaY21GSS_VIKSg0mvzu1b0r6arH8xvWVskoMaZ5ww3iDMgBNujnIWCt7MOkDsrKapSGCfc=w544-h544-l90-rj',
+        playCount: 1000,
+        titleColor: '#FFFFFF',
+        authorColor: '#FFFFFF',
+        playCountColor: '#FF7A00',
+        backgroundColor: '#070707'
+    });
+
+    fs.writeFileSync('musicard.png', musicard);
+})();
+```
+
+---
+
+## Added to Queue
+
+![addedtoqueue](/assets/output-addedtoqueue.png)
+
+```js
+(async () => {
+    const { AddedToQueue } = require('musicard');
+    const fs = require('fs');
+
+    const musicard = await AddedToQueue({
+        title: 'Burn',
+        author: '2WEI & Edda Hayes',
+        thumbnailImage: 'https://lh3.googleusercontent.com/yavtBZZnoxaY21GSS_VIKSg0mvzu1b0r6arH8xvWVskoMaZ5ww3iDMgBNujnIWCt7MOkDsrKapSGCfc=w544-h544-l90-rj',
+        message: 'Added to Queue',
+        titleColor: '#FFFFFF',
+        authorColor: '#FFFFFF',
+        messageColor: '#00FF00',
+        backgroundColor: '#070707'
+    });
+
+    fs.writeFileSync('musicard.png', musicard);
+})();
+```
+
 # Resource
 
 Pull request to add your project here.
@@ -241,6 +326,6 @@ Pull request to add your project here.
 | Riffy Music Bot | https://github.com/riffy-team/riffy-music-bot |
 | --------------- | --------------------------------------------- |
 
-# Licence
+# License
 
 [GPL](https://github.com/unburn/musicard/blob/main/LICENSE)

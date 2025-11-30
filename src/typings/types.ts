@@ -132,3 +132,158 @@ export type UpcomingOptions = {
      */
     imageDarkness?: number;
 };
+
+export type QueueListOptions = {
+    /**
+     * List of tracks in the queue
+     */
+    tracks: Array<{
+        title: string;
+        author: string;
+        thumbnailImage?: Parameters<typeof loadImage>[0];
+    }>;
+
+    /**
+     * Title for the queue list
+     * @default "Queue List"
+     */
+    title?: string;
+
+    /**
+     * Color for the title
+     * @default #FFFFFF
+     */
+    titleColor?: string;
+
+    /**
+     * Background Color
+     * @default #070707
+     */
+    backgroundColor?: string;
+
+    /**
+     * Background Image
+     * @optional
+     */
+    backgroundImage?: Parameters<typeof loadImage>[0];
+
+    /**
+     * Darkness for the background Image.
+     */
+    imageDarkness?: number;
+};
+
+export type MostPlayedOptions = {
+    /**
+     * Title of the most played track
+     */
+    title: string;
+
+    /**
+     * Color For the Track Title
+     * @default #FFFFFF(White)
+     */
+    titleColor?: string;
+
+    /**
+     * Author of the track
+     */
+    author: string;
+
+    /**
+     * Color For the Track's Author
+     * @default #FFFFFF(White)
+     */
+    authorColor?: string;
+
+    /**
+     * Thumbnail of the track
+     */
+    thumbnailImage?: Parameters<typeof loadImage>[0];
+
+    /**
+     * Play count of the track
+     */
+    playCount: number;
+
+    /**
+     * Color for play count text
+     * @default #FF7A00
+     */
+    playCountColor?: string;
+
+    /**
+     * Background Color
+     * @default #070707
+     */
+    backgroundColor?: string;
+
+    /**
+     * Background Image
+     * @optional
+     */
+    backgroundImage?: Parameters<typeof loadImage>[0];
+
+    /**
+     * Darkness for the background Image.
+     */
+    imageDarkness?: number;
+};
+
+export type AddedToQueueOptions = {
+    /**
+     * Title of the track added to queue
+     */
+    title: string;
+
+    /**
+     * Color For the Track Title
+     * @default #FFFFFF(White)
+     */
+    titleColor?: string;
+
+    /**
+     * Author of the track
+     */
+    author: string;
+
+    /**
+     * Color For the Track's Author
+     * @default #FFFFFF(White)
+     */
+    authorColor?: string;
+
+    /**
+     * Thumbnail of the track
+     */
+    thumbnailImage?: Parameters<typeof loadImage>[0];
+
+    /**
+     * Message to display
+     * @default "Added to Queue"
+     */
+    message?: string;
+
+    /**
+     * Color for the message
+     * @default #00FF00
+     */
+    messageColor?: string;
+
+    /**
+     * Background Color
+     * @default #070707
+     */
+    backgroundColor?: string;
+
+    /**
+     * Background Image
+     * @optional
+     */
+    backgroundImage?: Parameters<typeof loadImage>[0];
+
+    /**
+     * Darkness for the background Image.
+     */
+    imageDarkness?: number;
+};

@@ -32,17 +32,17 @@ Dynamic({
     progressBarColor: '#2B2B2B',
     progress: 0,
 }).then(x => {
-    fs.writeFileSync('output-dynamic.png', x);
+    fs.writeFileSync('/assets/output-dynamic.png', x);
 })
 
 console.log("generating Classic AND ClassicPro Theme, Check the output-classic.png & output-classicpro.png file, After few seconds");
 
 Classic({ ...classicThemeOptions }).then(x => {
-    fs.writeFileSync('output-classic.png', x);
+    fs.writeFileSync('/assets/output-classic.png', x);
 });
 
 ClassicPro({ ...classicThemeOptions }).then(x => {
-    fs.writeFileSync('output-classicpro.png', x);
+    fs.writeFileSync('/assets/output-classicpro.png', x);
 });
 
 console.log("generating Mini Theme, Check the output-mini.png file, After few seconds");
@@ -57,7 +57,7 @@ Mini({
         menuColor: '#FF7A00',
         paused: false,
 }).then(x => {
-    fs.writeFileSync('output-mini.png', x);
+    fs.writeFileSync('/assets/output-mini.png', x);
 });
 
 console.log("Done! ✅");
