@@ -96,7 +96,7 @@ SylphaCard is the #1 canvas library to create music cards with awesome themes.
 })();
 ```
 ---
-![classicpro](https://raw.githubusercontent.com/SatzzDev/sylpacard/main/output-classicpro.png)
+![classicpro](https://raw.githubusercontent.com/SatzzDev/sylpacard/main/assets/output-classicpro.png)
 ---
 
 ## Dynamic
@@ -123,7 +123,7 @@ SylphaCard is the #1 canvas library to create music cards with awesome themes.
 })();
 ```
 ---
-![dynamic](https://raw.githubusercontent.com/SatzzDev/sylpacard/main/output-dynamic.png)
+![dynamic](https://raw.githubusercontent.com/SatzzDev/sylpacard/main/assets/output-dynamic.png)
 ---
 
 ## Mini
@@ -148,7 +148,7 @@ SylphaCard is the #1 canvas library to create music cards with awesome themes.
 })();
 ```
 ---
-![mini](https://raw.githubusercontent.com/SatzzDev/sylpacard/main/output-mini.png)
+![mini](https://raw.githubusercontent.com/SatzzDev/sylpacard/main/assets/output-mini.png)
 ---
 
 ## Upcoming
@@ -171,7 +171,7 @@ SylphaCard is the #1 canvas library to create music cards with awesome themes.
 })();
 ```
 ---
-![Upcoming](https://raw.githubusercontent.com/SatzzDev/sylpacard/main/output-upcoming.png)
+![Upcoming](https://raw.githubusercontent.com/SatzzDev/sylpacard/main/assets/output-upcoming.png)
 ---
 
 ## Queue
@@ -196,14 +196,17 @@ SylphaCard is the #1 canvas library to create music cards with awesome themes.
         ],
         title: 'Queue List',
         titleColor: '#FFFFFF',
-        backgroundColor: '#070707'
+        backgroundColor: '#070707',
+        badgeBg: '#5865F2',
+        badgeBorder: '#FFFFFF',
+        badgeText: '#FFFFFF'
     });
 
     fs.writeFileSync('musicard.png', musicard);
 })();
 ```
 ---
-![queue](https://raw.githubusercontent.com/SatzzDev/sylpacard/main/output-queue.png)
+![queue](https://raw.githubusercontent.com/SatzzDev/sylpacard/main/assets/output-queue.png)
 ---
 
 
@@ -229,7 +232,7 @@ SylphaCard is the #1 canvas library to create music cards with awesome themes.
 })();
 ```
 ---
-![addedtoqueue](https://raw.githubusercontent.com/SatzzDev/sylpacard/main/output-addedtoqueue.png)
+![addedtoqueue](https://raw.githubusercontent.com/SatzzDev/sylpacard/main/assets/output-addedtoqueue.png)
 ---
 
 
@@ -306,5 +309,5 @@ Berakhir di Aku`,
 })();
 ```
 ---
-![lyrics](https://raw.githubusercontent.com/SatzzDev/sylpacard/main/output-lyrics.png)
+![lyrics](https://raw.githubusercontent.com/SatzzDev/sylpacard/main/assets/output-lyrics.png)
 ---

@@ -12,7 +12,7 @@ registerFont("PlusJakartaSans-Light.ttf", "light");
 registerFont("PlusJakartaSans-Medium.ttf", "medium");
 registerFont("PlusJakartaSans-Regular.ttf", "regular");
 registerFont("PlusJakartaSans-SemiBold.ttf", "semibold");
-registerFont("DmSans-Medium.ttf", "lyrics");
+registerFont("DMSans-Medium.ttf", "lyrics");
 
 const Lyrics = async (options: LyricsOptions): Promise<Buffer> => {
     if (!options.titleColor) options.titleColor = "#FFFFFF";

@@ -690,6 +690,9 @@ var QueueList = async (options) => {
   if (!options.titleColor) options.titleColor = "#FFFFFF";
   if (!options.backgroundColor) options.backgroundColor = "#070707";
   if (!options.imageDarkness) options.imageDarkness = 10;
+  if (!options.badgeBg) options.badgeBg = "#5865F2";
+  if (!options.badgeBorder) options.badgeBorder = "#FFFFFF";
+  if (!options.badgeText) options.badgeText = "#FFFFFF";
   const noImageSvg = generateSvg(`<svg width="613" height="837" viewBox="0 0 613 837" fill="none" xmlns="http://www.w3.org/2000/svg">
     <rect width="613" height="837" rx="50" fill="${options.backgroundColor}" />
     </svg>`);
@@ -706,7 +709,7 @@ var QueueList = async (options) => {
           imagePath: options.backgroundImage,
           width: 690,
           height: 700,
-          borderRadius: 50,
+          borderRadius: 20,
           cropCenter: true
         });
         ctx.drawImage(await (0, import_canvas7.loadImage)(image), 0, 0);
@@ -739,7 +742,7 @@ var QueueList = async (options) => {
     ctx.shadowBlur = 8;
     ctx.shadowOffsetX = 2;
     ctx.shadowOffsetY = 2;
-    ctx.fillStyle = "#5865F2";
+    ctx.fillStyle = options.badgeBg;
     ctx.beginPath();
     ctx.moveTo(badgeX + 12, badgeY);
     ctx.lineTo(badgeX + badgeW - 12, badgeY);
@@ -754,12 +757,12 @@ var QueueList = async (options) => {
     ctx.fill();
     ctx.shadowColor = "transparent";
     ctx.lineWidth = 2;
-    ctx.strokeStyle = "#FFFFFF";
+    ctx.strokeStyle = options.badgeBorder;
     ctx.lineJoin = "round";
     ctx.stroke();
     ctx.shadowColor = "transparent";
     ctx.shadowBlur = 0;
-    ctx.fillStyle = options.titleColor;
+    ctx.fillStyle = options.badgeText;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     ctx.fillText(badgeText, badgeX + badgeW / 2, 52);
@@ -980,7 +983,7 @@ registerFont("PlusJakartaSans-Light.ttf", "light");
 registerFont("PlusJakartaSans-Medium.ttf", "medium");
 registerFont("PlusJakartaSans-Regular.ttf", "regular");
 registerFont("PlusJakartaSans-SemiBold.ttf", "semibold");
-registerFont("DmSans-Medium.ttf", "lyrics");
+registerFont("DMSans-Medium.ttf", "lyrics");
 var Lyrics = async (options) => {
   if (!options.titleColor) options.titleColor = "#FFFFFF";
   if (!options.authorColor) options.authorColor = "#FFFFFF";

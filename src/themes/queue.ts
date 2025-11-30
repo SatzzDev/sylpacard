@@ -19,6 +19,9 @@ const QueueList = async (options: QueueListOptions): Promise<Buffer> => {
     if (!options.titleColor) options.titleColor = "#FFFFFF";
     if (!options.backgroundColor) options.backgroundColor = "#070707";
     if (!options.imageDarkness) options.imageDarkness = 10;
+    if (!options.badgeBg) options.badgeBg = "#5865F2";
+    if (!options.badgeBorder) options.badgeBorder = "#FFFFFF";
+    if (!options.badgeText) options.badgeText = "#FFFFFF";
 
     const noImageSvg = generateSvg(`<svg width="613" height="837" viewBox="0 0 613 837" fill="none" xmlns="http://www.w3.org/2000/svg">
     <rect width="613" height="837" rx="50" fill="${options.backgroundColor}" />
@@ -40,7 +43,7 @@ const QueueList = async (options: QueueListOptions): Promise<Buffer> => {
                     imagePath: options.backgroundImage,
                     width: 690,
                     height: 700,
-                    borderRadius: 50,
+                    borderRadius: 20,
                     cropCenter: true,
                 });
 
@@ -91,7 +94,7 @@ const QueueList = async (options: QueueListOptions): Promise<Buffer> => {
         ctx.shadowOffsetY = 2;
 
         // Badge background (rounded rectangle manual path)
-        ctx.fillStyle = "#5865F2";
+        ctx.fillStyle = options.badgeBg;
         ctx.beginPath();
         ctx.moveTo(badgeX + 12, badgeY);
         ctx.lineTo(badgeX + badgeW - 12, badgeY);
@@ -108,7 +111,7 @@ const QueueList = async (options: QueueListOptions): Promise<Buffer> => {
         // Badge border
         ctx.shadowColor = "transparent";
         ctx.lineWidth = 2;
-        ctx.strokeStyle = "#FFFFFF";
+        ctx.strokeStyle = options.badgeBorder;
         ctx.lineJoin = "round";
         ctx.stroke();
 
@@ -117,7 +120,7 @@ const QueueList = async (options: QueueListOptions): Promise<Buffer> => {
         ctx.shadowBlur = 0;
 
         // Title text di tengah badge
-        ctx.fillStyle = options.titleColor;
+        ctx.fillStyle = options.badgeText;
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
         ctx.fillText(badgeText, badgeX + badgeW/2, 52);

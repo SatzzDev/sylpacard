@@ -149,6 +149,21 @@ type QueueListOptions = {
      * Darkness for the background Image.
      */
     imageDarkness?: number;
+    /**
+     * Badge Background Color
+     * @default #5865F2
+     */
+    badgeBg?: string;
+    /**
+     * Badge Border Color
+     * @default #FFFFFF
+     */
+    badgeBorder?: string;
+    /**
+     * Badge Text Color
+     * @default #FFFFFF
+     */
+    badgeText?: string;
 };
 type AddedToQueueOptions = {
     /**

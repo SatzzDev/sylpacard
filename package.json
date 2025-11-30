@@ -1,6 +1,6 @@
 {
     "name": "sylphacard",
-    "version": "2.0.5",
+    "version": "3.0.2",
     "description": "SylphaCard is one of the best canvas libraries to create a variety of music cards.",
     "main": "dist/index.js",
     "module": "dist/index.mjs",
