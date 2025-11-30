@@ -1,6 +1,6 @@
 {
     "name": "sylphacard",
-    "version": "3.0.2",
+    "version": "3.0.4",
     "description": "SylphaCard is one of the best canvas libraries to create a variety of music cards.",
     "main": "dist/index.js",
     "module": "dist/index.mjs",
@@ -22,7 +22,7 @@
         "deploy": "npm publish",
         "deploy:beta": "npm publish --tag beta",
         "test:m": "tsup && cd tests && node index.mjs",
-        "test:c": "cd tests && node index.js",
+        "test:c": "tsup && cd tests && node index.js",
         "lint": "biome lint --write src/",
         "format": "biome format --write src/"
     },
@@ -56,7 +56,7 @@
         "url": "https://github.com/SatzzDev/sylphacard/issues"
     },
     "dependencies": {
-        "@napi-rs/canvas": "^0.1.53",
+        "@napi-rs/canvas": "latest",
         "cropify": "latest"
     }
 }

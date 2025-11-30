@@ -31,11 +31,13 @@ const QueueList = async (options: QueueListOptions): Promise<Buffer> => {
         const canvas = createCanvas(690, 700);
         const ctx = canvas.getContext("2d");
 
-        // Background
+        // Background - FIXED DARKNESS RADIUS
         if (options.backgroundImage) {
             try {
+                const borderRadius = 10; // Reduced from 20 to make less rounded
+                
                 const darknessSvg = generateSvg(`<svg width="690" height="700" viewBox="0 0 690 700" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect width="690" height="700" rx="100" fill="#070707" fill-opacity="${options.imageDarkness / 100}"/>
+                <rect width="690" height="700" rx="${borderRadius}" ry="${borderRadius}" fill="#070707" fill-opacity="${options.imageDarkness / 100}"/>
                 </svg>`);
 
                 const image = await cropImage({
@@ -43,7 +45,7 @@ const QueueList = async (options: QueueListOptions): Promise<Buffer> => {
                     imagePath: options.backgroundImage,
                     width: 690,
                     height: 700,
-                    borderRadius: 20,
+                    borderRadius: borderRadius,
                     cropCenter: true,
                 });
 
@@ -51,7 +53,7 @@ const QueueList = async (options: QueueListOptions): Promise<Buffer> => {
                 ctx.drawImage(await loadImage(darknessSvg), 0, 0);
             } catch (_error) {
                 const backgroundSvg = generateSvg(`<svg width="690" height="700" viewBox="0 0 690 700" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect width="690" height="700" rx="100" fill="${options.backgroundColor}"/>
+                <rect width="690" height="700" rx="12" ry="10" fill="${options.backgroundColor}"/>
                 </svg>`);
 
                 const backgroundColor = await loadImage(backgroundSvg);
@@ -59,31 +61,26 @@ const QueueList = async (options: QueueListOptions): Promise<Buffer> => {
             }
         } else {
             const backgroundSvg = generateSvg(`<svg width="690" height="700" viewBox="0 0 690 700" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="690" height="700" rx="100" fill="${options.backgroundColor}"/>
+            <rect width="690" height="700" rx="12" ry="12" fill="${options.backgroundColor}"/>
             </svg>`);
 
             const backgroundColor = await loadImage(backgroundSvg);
             ctx.drawImage(backgroundColor, 0, 0);
         }
 
-        // Title Badge - Menggunakan mekanisme kode yang diberikan
-        // Set font badge
-        ctx.font = "25px badge"; // Ukuran lebih besar untuk title
+        // Title Badge
+        ctx.font = "25px badge";
         const badgeText = options.title;
 
-        // Padding badge
         const padX = 12;
         const padY = 8;
 
-        // Hitung ukuran tulisan
         const textWidth = ctx.measureText(badgeText).width;
         const textHeight = 30;
 
-        // Posisi kiri atas
         const badgeX = 20;
         const badgeY = 25;
 
-        // Ukuran badge
         const badgeW = textWidth + padX * 2;
         const badgeH = textHeight + padY * 2;
 
@@ -93,7 +90,7 @@ const QueueList = async (options: QueueListOptions): Promise<Buffer> => {
         ctx.shadowOffsetX = 2;
         ctx.shadowOffsetY = 2;
 
-        // Badge background (rounded rectangle manual path)
+        // Badge background (rounded rectangle)
         ctx.fillStyle = options.badgeBg;
         ctx.beginPath();
         ctx.moveTo(badgeX + 12, badgeY);
@@ -115,11 +112,11 @@ const QueueList = async (options: QueueListOptions): Promise<Buffer> => {
         ctx.lineJoin = "round";
         ctx.stroke();
 
-        // Reset shadow untuk text
+        // Reset shadow for text
         ctx.shadowColor = "transparent";
         ctx.shadowBlur = 0;
 
-        // Title text di tengah badge
+        // Title text
         ctx.fillStyle = options.badgeText;
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
@@ -130,7 +127,7 @@ const QueueList = async (options: QueueListOptions): Promise<Buffer> => {
         const tracksToShow = options.tracks.slice(0, 10);
         for (let i = 0; i < tracksToShow.length; i++) {
             const track = tracksToShow[i];
-            const y = 90 + i * 60; // Adjusted untuk badge height
+            const y = 90 + i * 60;
 
             // Thumbnail
             let thumbnail;

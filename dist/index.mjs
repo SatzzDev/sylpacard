@@ -665,29 +665,30 @@ var QueueList = async (options) => {
     const ctx = canvas.getContext("2d");
     if (options.backgroundImage) {
       try {
+        const borderRadius = 10;
         const darknessSvg = generateSvg(`<svg width="690" height="700" viewBox="0 0 690 700" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect width="690" height="700" rx="100" fill="#070707" fill-opacity="${options.imageDarkness / 100}"/>
+                <rect width="690" height="700" rx="${borderRadius}" ry="${borderRadius}" fill="#070707" fill-opacity="${options.imageDarkness / 100}"/>
                 </svg>`);
         const image = await cropImage6({
           //@ts-ignore
           imagePath: options.backgroundImage,
           width: 690,
           height: 700,
-          borderRadius: 20,
+          borderRadius,
           cropCenter: true
         });
         ctx.drawImage(await loadImage6(image), 0, 0);
         ctx.drawImage(await loadImage6(darknessSvg), 0, 0);
       } catch (_error) {
         const backgroundSvg = generateSvg(`<svg width="690" height="700" viewBox="0 0 690 700" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect width="690" height="700" rx="100" fill="${options.backgroundColor}"/>
+                <rect width="690" height="700" rx="12" ry="10" fill="${options.backgroundColor}"/>
                 </svg>`);
         const backgroundColor = await loadImage6(backgroundSvg);
         ctx.drawImage(backgroundColor, 0, 0);
       }
     } else {
       const backgroundSvg = generateSvg(`<svg width="690" height="700" viewBox="0 0 690 700" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="690" height="700" rx="100" fill="${options.backgroundColor}"/>
+            <rect width="690" height="700" rx="12" ry="12" fill="${options.backgroundColor}"/>
             </svg>`);
       const backgroundColor = await loadImage6(backgroundSvg);
       ctx.drawImage(backgroundColor, 0, 0);
@@ -903,12 +904,12 @@ var AddedToQueue = async (options) => {
     ctx.font = "17px medium";
     ctx.fillStyle = options.authorColor;
     ctx.fillText(options.author, 150, 85);
-    ctx.font = "15px badge";
+    ctx.font = "12px badge";
     const badgeText = options.message;
-    const padX = 10;
-    const padY = 6;
+    const padX = 8;
+    const padY = 4;
     const textWidth = ctx.measureText(badgeText).width;
-    const textHeight = 20;
+    const textHeight = 14;
     const badgeX = canvas.width - textWidth - padX * 2 - 25;
     const badgeY = 20;
     const badgeW = textWidth + padX * 2;
@@ -927,7 +928,7 @@ var AddedToQueue = async (options) => {
     ctx.fillStyle = options.badgeBg;
     ctx.fill();
     ctx.strokeStyle = options.badgeBorder;
-    ctx.lineWidth = 1.5;
+    ctx.lineWidth = 1.2;
     ctx.stroke();
     ctx.fillStyle = options.badgeText;
     ctx.fillText(badgeText, badgeX + padX, badgeY + badgeH - padY - 2);

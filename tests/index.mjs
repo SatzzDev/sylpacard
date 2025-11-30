@@ -2,17 +2,17 @@ import { Classic, ClassicPro, Dynamic, Mini, Upcoming, QueueList, AddedToQueue, 
 import fs from 'fs';
 
 // Common values
-const thumbnailImage = 'https://i.scdn.co/image/ab67616d0000b2734ae1c2813cfa6d10c73f4661';
+const thumbnailImage = 'https://i.scdn.co/image/ab67616d0000b27359ae8cf65d498afdd5585634';
 const backgroundColor = '#2C2F33';
 const progressColor = '#5865F2';
 const progressBarColor = '#2C2F33';
 const startTime = "00:00";
-const endTime = "03:56";
+const endTime = "05:40";
 const progress = 0;
 const nameColor = '#5865F2';
 const authorColor = '#B9BBBE';
-const title = 'Berakhir di Aku';
-const author = 'Idgitaf';
+const title = 'Margaret (feat. leachers)';
+const author = 'Lana Del Rey';
 
 // Test Classic
 Classic({

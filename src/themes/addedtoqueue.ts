@@ -145,16 +145,16 @@ const AddedToQueue = async (options: AddedToQueueOptions): Promise<Buffer> => {
         ctx.fillText(options.author, 150, 85);
 
         // Set font kecil biar badge vibes
-        ctx.font = "15px badge";
+        ctx.font = "12px badge";
         const badgeText = options.message;
 
         // Padding badge
-        const padX = 10;
-        const padY = 6;
+        const padX = 8;
+        const padY = 4;
 
         // Hitung ukuran tulisan
         const textWidth = ctx.measureText(badgeText).width;
-        const textHeight = 20;
+        const textHeight = 14;
 
         // Posisi kanan atas
         const badgeX = canvas.width - textWidth - padX * 2 - 25;
@@ -183,7 +183,7 @@ const AddedToQueue = async (options: AddedToQueueOptions): Promise<Buffer> => {
 
         // Badge border (optional)
         ctx.strokeStyle = options.badgeBorder
-        ctx.lineWidth = 1.5;
+        ctx.lineWidth = 1.2;
         ctx.stroke();
 
         // Draw text

@@ -1,6 +1,0 @@
-- [ ] Update package.json: name, description, keywords, author, repository, bugs
-- [ ] Update readme.md: replace 'Musicard' with 'SylphaCard', update imports
-- [ ] Update tests/index.mjs: change import from 'musicard' to 'sylphacard'
-- [ ] Update tests/index.js: change require from 'musicard' to 'sylphacard'
-- [ ] Regenerate package-lock.json
-- [ ] Update git remote URL to https://github.com/SatzzDev/sylphacard.git
